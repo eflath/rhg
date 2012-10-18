@@ -262,14 +262,14 @@ class Obituary(object):
         
         
     
-def main():
+# def main():
     
-    newHeadline = Headline(type = "basic")
-    newObituary = Obituary()
+#     newHeadline = Headline(type = "basic")
+#     newObituary = Obituary()
 
 
-print("Content-type: text/plain\n\n")
-main() 
+# print("Content-type: text/plain\n\n")
+# main() 
 
 
 
