@@ -10,6 +10,8 @@ import string
 import cgitb
 cgitb.enable()
 
+CSV_RELATIVE_PATH = "../resources/csv"
+
 ##Pretty print
 ##syntax: pp.pprint(stuff)
 
@@ -41,7 +43,7 @@ def randomWord(*file):
 
 def nounToPronoun(gender):
     
-    pronounList = assemble_csv("rhg_pronouns.csv")
+    pronounList = assemble_csv(CSV_RELATIVE_PATH+"/rhg_pronouns.csv")
 
     for each in pronounList:
         if each["gender"] == gender:
@@ -166,102 +168,99 @@ class Pronoun(object):
 
 
 class Headline(object):
-    
+
     """This is the headline class"""
-    
-    def __init__(self,*args,**kwargs):
-        
+    def __init__(self, *args, **kwargs):
+
         if kwargs["type"] == "basic":
-            
-            hSubject = Noun(randomWord("rhg_nAnimate.csv"))
-            hAction = Verb(randomWord("rhg_verbs.csv"))
-            hObject = Noun(randomWord("rhg_nInanimate.csv"))
+
+            hSubject = Noun(randomWord(CSV_RELATIVE_PATH+"/rhg_nAnimate.csv"))
+            hAction = Verb(randomWord(CSV_RELATIVE_PATH+"/rhg_verbs.csv"))
+            hObject = Noun(randomWord(CSV_RELATIVE_PATH+"/rhg_nInanimate.csv"))
             hObjectArticleQuantifier = ""
             hObjectReply = ""
-            
-    
-            if hObject.article == None:
-                hObjectReply = hObject.plural
-                hObjectArticleQuantifier =  random.choice(hObject.quantifier)
-            else:
-                hObjectReply = hObject.singular
-                hObjectArticleQuantifier =  hObject.article
-                
-            
-            mainHeadline = (hSubject.singular + " " + hAction.present + " " + hObject.singular)
-            
-            print("\n")
-            
-            print("----Today's News----")
-            
-            print("\n")
-            
-            print(string.capwords(mainHeadline))
-            
-            print("\n")
-            
-            print(hSubject.singular + " replied, " + "\"I " + hAction.past + " " + hObjectArticleQuantifier +
-                  " " + hObjectReply + ". Who Cares?\"")
-            
-            print("\n")    
-        
-        
+
+        if hObject.article is None:
+            hObjectReply = hObject.plural
+            hObjectArticleQuantifier = random.choice(hObject.quantifier)
+        else:
+            hObjectReply = hObject.singular
+            hObjectArticleQuantifier = hObject.article
+
+        self.main_headline = (hSubject.singular + " " +
+                               hAction.present + " " +
+                               hObject.singular)
+
+        self.blurb = (hSubject.singular + " replied, " + "\"I " + hAction.past + " " + hObjectArticleQuantifier +" " + hObjectReply + ". Who Cares?\"")
+        # print("\n")
+        # print("----Today's News----")
+        # print("\n")
+        # print(string.capwords(mainHeadline))
+        # print("\n")
+        # print(hSubject.singular + " replied, " + "\"I " + hAction.past + " " + hObjectArticleQuantifier +
+        #       " " + hObjectReply + ". Who Cares?\"")
+        # print("\n")
+
+
 class Obituary(object):
-    
     """This is the obituary class"""
-    
+
     def __init__(self):
-        
         #obituary headline
-        
-        oSubject = Noun(randomWord("rhg_nAnimate.csv"))
-        oVerb = Verb(randomWord("rhg_verbs.csv"))
-        oObject = Noun(randomWord("rhg_nInanimate.csv"))
+
+        oSubject = Noun(randomWord(CSV_RELATIVE_PATH+"/rhg_nAnimate.csv"))
+        oVerb = Verb(randomWord(CSV_RELATIVE_PATH+"/rhg_verbs.csv"))
+        oObject = Noun(randomWord(CSV_RELATIVE_PATH+"/rhg_nInanimate.csv"))
         oObjectArticleQuantifier = ""
         oObjectState = ""
-        
-        if oObject.article == None:
+
+        if oObject.article is None:
             oObjectState = oObject.plural
-            oObjectArticleQuantifier =  random.choice(oObject.quantifier)
+            oObjectArticleQuantifier = random.choice(oObject.quantifier)
         else:
             oObjectState = oObject.singular
-            oObjectArticleQuantifier =  oObject.article
-        
-        obituaryText = oSubject.singular + " dies while " + oVerb.presentparticiple + " " + oObjectArticleQuantifier + " " + oObjectState
-        
+            oObjectArticleQuantifier = oObject.article
+
+        self.headline = oSubject.singular + " dies while " +\
+                             oVerb.presentparticiple + " " +\
+                             oObjectArticleQuantifier + " " +\
+                             oObjectState
+
         #remembering the deceased
-        
-        oSubjectFriend = Noun(randomWord("rhg_nAnimate.csv"))
-        oPlace = Noun(randomWord("rhg_nPlaces.csv"))
+
+        oSubjectFriend = Noun(randomWord(CSV_RELATIVE_PATH+"/rhg_nAnimate.csv"))
+        oPlace = Noun(randomWord(CSV_RELATIVE_PATH+"/rhg_nPlaces.csv"))
         oPronoun = Pronoun(nounToPronoun(oSubject.gender))
         oPlacePrep = random.choice(oPlace.prepositions)
         oPlaceArticle = ""
-        oSubjectAdj = Adjective(randomWord("rhg_adjectives.csv"))
-        
-        if oPlace.article == None:
+        oSubjectAdj = Adjective(randomWord(CSV_RELATIVE_PATH+"/rhg_adjectives.csv"))
+
+        if oPlace.article is None:
             oPlaceArticle = ""
         else:
             oPlaceArticle = oPlace.article
-        
-        remembranceSentence1 = oSubjectFriend.singular + " said, \"Last time I saw " + oPronoun.object + ", " + oPronoun.subject + " was " + oPlacePrep + " " + oPlaceArticle + " " + oPlace.singular + ".\""
-        remembranceSentence2 = "\"" + oPronoun.subject + " was a " + oSubjectAdj.positive + " dude and I'll never forget " + oPronoun.object + ".\""
-        
-        print("----Today's Death----")
-        
-        print("\n")
-        
-        print(string.capwords(obituaryText))
-        
-        print("\n")
-        
-        print(remembranceSentence1.capitalize())
-        print(remembranceSentence2.capitalize())
-        
-        print("\n")
-        
-        
-        
-    
+
+        self.full_text = oSubjectFriend.singular + " said, \"Last time I saw " + oPronoun.object + ", " + oPronoun.subject + " was " + oPlacePrep + " " + oPlaceArticle + " " + oPlace.singular + ". " + oPronoun.subject + " was a " + oSubjectAdj.positive + " dude and I'll never forget " + oPronoun.object + ".\""
+
+        # print("----Today's Death----")
+        # print("\n")
+        # print(string.capwords(obituaryText))
+        # print("\n")
+        # print(remembranceSentence1.capitalize())
+        # print(remembranceSentence2.capitalize())
+        # print("\n")
+    # @property
+    # def headline(self):
+    #     return self.obituary_text
+
+    # @property
+    # def remembrance_sentence1(self):
+    #     return self.remembrance_sentence1
+
+    # @property
+    # def remembrance_sentence2(self):
+    #     return self.remembrance_sentence2
+
 # def main():
     
 #     newHeadline = Headline(type = "basic")
