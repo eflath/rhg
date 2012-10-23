@@ -1,42 +1,42 @@
-singular,plural,article,quantifier
-animal,animals,an,"a couple, some"
-balloon,balloons,a,"a couple,some"
-beer,beers, a,"a couple,some"
-blood,blood,,some
-breakfast,breakfast,,some
-bubble,bubbles,a,"a couple,some"
-bucket,buckets,a,"a couple,some"
-chair,chairs,,"a couple,some"
-champagne,champagne,,some
-chocolate,chocolates,,"a couple,some"
-cleaver,cleavers,a,"a couple,some"
-cocaine,cocaine,,some
-couch,couches,a,"a couple,some"
-crayon,crayons,a,"a couple,some"
-drug,drugs,,"a couple,some"
-elbow,elbows,an,"a couple,some"
-eyeball,eyeballs,,"a couple,some"
-faucet,faucets,a,"a couple,some"
-feather,feathers,a,"a couple,some"
-flag,flags,,"a couple,some"
-flesh,flesh,,some
-flower,flowers,a,"a couple,some"
-food,food,,some
-football,footballs,a,"a couple,some"
-garbage,garbage,,some
-guitar,guitars,a,"a couple,some"
-jacket,jackets,a,"a couple,some"
-knife,knives,a,"some,a couple"
-medication,medication,,some
-milk,milk,,some
-pasta,pasta,,some
-potpourri,potpourri,,some
-pumpkin,pumpkins,a,"a couple,some"
-rock,rocks,a,"a couple,some"
-sandwich,sandwiches,a,some
-soap,soap,,some
-soda,sodas,a,"a couple,some"
-television,televisions,a,"a couple,some"
-tofu,tofu,,some
-tooth,teeth,a,"a couple,some"
-water,water,,some
+singular,plural,countable,article,quantifier
+animal,animals,1,an,"a couple, some"
+balloon,balloons,1,a,"a couple,some"
+beer,beers,1,a,"a couple,some"
+blood,blood,0,,some
+breakfast,breakfast,0,,some
+bubble,bubbles,1,a,"a couple,some"
+bucket,buckets,1,a,"a couple,some"
+chair,chairs,1,a,"a couple,some"
+champagne,champagne,0,,some
+chocolate,chocolates,1,a,"a couple,some"
+cleaver,cleavers,1,a,"a couple,some"
+cocaine,cocaine,0,,some
+couch,couches,1,a,"a couple,some"
+crayon,crayons,1,a,"a couple,some"
+drug,drugs,1,a,"a couple,some"
+elbow,elbows,1,an,"a couple,some"
+eyeball,eyeballs,1,an,"a couple,some"
+faucet,faucets,1,a,"a couple,some"
+feather,feathers,1,a,"a couple,some"
+flag,flags,1,a,"a couple,some"
+flesh,flesh,0,,some
+flower,flowers,1,a,"a couple,some"
+food,food,0,,some
+football,footballs,1,a,"a couple,some"
+garbage,garbage,0,,some
+guitar,guitars,1,a,"some, a couple"
+jacket,jackets,1,a,"a couple,some"
+knife,knives,1,a,"some,a couple"
+medication,medications,1,a,some
+milk,milk,0,,some
+pasta,pasta,0,,some
+potpourri,potpourri,0,,some
+pumpkin,pumpkins,1,a,"a couple,some"
+rock,rocks,1,a,"a couple,some"
+sandwich,sandwiches,1,a,some
+soap,soap,0,,some
+soda,sodas,1,a,"a couple,some"
+television,televisions,1,a,"a couple,some"
+tofu,tofu,0,,some
+tooth,teeth,1,a,"a couple,some"
+water,water,0,,some

@@ -1,32 +1,48 @@
-positive,comparitive,superlative
-angry,angrier,angriest
-bloody,bloodier,bloodiest
-brave,braver,bravest
-clumsy,clumsier,clumsiest
-dangerous,more dangerous,most dangerous
-dazzling,more dazzling,most dazzling
-dirty,dirtier,dirtiest
-disgusting,more disgusting,most disgusting
-dramatic,more dramatic,most dramatic
-dumb,dumber,dumbest
-expensive,more expensive,most expensive
-filthy,filthier,filthiest
-friendly,friendlier,friendliest
-glorious,more glorious,most glorious
-gorgeous,more gorgeous,most gorgeous
-gruesome,more gruesome,most gruesome
-heavenly,more heavenly,most heavenly
-illegal,more illegal,most illegal
-imaginary,more imaginary,most imaginary
-invincible,more invincible,most invincible
-loving,more loving,most loving
-rancid,more rancid,most rancid
-slippery,slipperier,slippiriest 
-sloppy,sloppier,sloppiest
-smelly,smellier,smelliest
-sneaky,sneakier,sneakiest
-spooky,spookier,spookiest
-stupid,stupider,stupidest
-ugly,uglier,ugliest
-wet,wetter,wettest
-wonderful,more wonderful,most wonderful
+positive,comparitive,superlative,article
+angry,angrier,angriest,an
+awesome,more awesome,most awesome,an
+bloody,bloodier,bloodiest,a
+bold,bolder,boldest,a
+brave,braver,bravest,a
+clumsy,clumsier,clumsiest,a
+contaminated,more contaminated,most contaminated,a
+corrupt,more corrupt,most corrupt,a
+damaged,more damaged,most damaged,a
+dangerous,more dangerous,most dangerous,a
+dazzling,more dazzling,most dazzling,a
+dirty,dirtier,dirtiest,a
+disgusting,more disgusting,most disgusting,a
+disheveled,more disheveled,most disheveled,a
+dramatic,more dramatic,most dramatic,a
+dumb,dumber,dumbest,a
+embarrasing,more embarassing,most embarassing,an
+expensive,more expensive,most expensive,an
+filthy,filthier,filthiest,a
+flamboyant,more flamboyant,most flamboyant,a
+friendly,friendlier,friendliest,a
+glorious,more glorious,most glorious,a
+gorgeous,more gorgeous,most gorgeous,a
+gruesome,more gruesome,most gruesome,a
+heavenly,more heavenly,most heavenly,a
+hungry,hungrier,hungriest,a
+illegal,more illegal,most illegal,an
+imaginary,more imaginary,most imaginary,an
+intelligent,more intelligent,most intelligent,an
+invincible,more invincible,most invincible,an
+loving,more loving,most loving,a
+mischievous,more mischievous,most mischiveous,a
+naughty,naughtier,naughtiest,a
+outrageous,more outrageous,most outrageous,an
+rancid,more rancid,most rancid,a
+ridiculous,more ridiculous,most ridiculous,aa
+sick,sicker,sickest,a
+simple,simpler,simplest,a
+slippery,slipperier,slippiriest ,a
+sloppy,sloppier,sloppiest,a
+smelly,smellier,smelliest,a
+sneaky,sneakier,sneakiest,a
+spooky,spookier,spookiest,a
+stupid,stupider,stupidest,a
+ugly,uglier,ugliest,an
+wet,wetter,wettest,a
+wonderful,more wonderful,most wonderful,a
