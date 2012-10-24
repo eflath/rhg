@@ -12,6 +12,8 @@ cgitb.enable()
 
 CSV_RELATIVE_PATH = "../resources/csv"
 
+test = []
+
 ##Pretty print
 ##syntax: pp.pprint(stuff)
 
