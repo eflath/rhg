@@ -140,6 +140,10 @@ def dollars(amount):
     return convertedAmount[0]    
 
 
+
+
+
+
 class Word(object):
     
     """This is the word class"""
@@ -409,7 +413,8 @@ class Headline(object):
             hObjectAdjective = Adjective(randomWord(CSV_RELATIVE_PATH+"/rhg_adjectives.csv"))
             hPlace = Noun(randomWord(CSV_RELATIVE_PATH+"/rhg_nPlaces.csv"))
             hPlaceAdjective = Adjective(randomWord(CSV_RELATIVE_PATH+"/rhg_adjectives.csv"))
-            
+            hFoundationCity = Noun(customWord(CSV_RELATIVE_PATH+"/rhg_nPlaces.csv",{"uscapital" : "1"}))
+            hFoundationObject = Noun(randomWord(CSV_RELATIVE_PATH+"/rhg_nInanimate.csv"),randomQuantity())
             
             # if the subject is a singular common noun use its article
             # if the subject is a proper noun, ignore..
@@ -448,7 +453,7 @@ class Headline(object):
             
             firstSentence = ("Today {subjectArticle} {subjectQuantity} {subject} {actionPast}" +
                             " {objectQuantifier} {objectAdjective} {theObject} {placePreposition}" +
-                            " {placeArticle} {place} for a local charity.")
+                            " {placeArticle} {place} for the {foundationCity} {foundationObject} Foundation. ")
             
             firstSentenceFormat = firstSentence.format(subjectArticle = hSubjectArticle,
                                                        subjectQuantity = hSubjectQuantity,
@@ -459,21 +464,24 @@ class Headline(object):
                                                        theObject = hObject.name,
                                                        placePreposition = hPlace.prepositions,
                                                        placeArticle = hPlace.article,
-                                                       place = hPlace.name
+                                                       place = hPlace.name,
+                                                       foundationCity = hFoundationCity.name,
+                                                       foundationObject = hFoundationObject.singular.capitalize()
                                                        )
             
             # Create the words necessary for the 2nd sentence
             
-            hAbstract = Noun(randomWord(CSV_RELATIVE_PATH+"/rhg_nAbstract.csv"))
-            hAbstractAdjective = Adjective(randomWord(CSV_RELATIVE_PATH+"/rhg_adjectives.csv"))
-            hHeartsAdjective = Adjective(randomWord(CSV_RELATIVE_PATH+"/rhg_adjectives.csv"))
+            hAttendanceAmount = random.randint(2,998)
+            hDollars = dollars(random.randint(2,5000000))
             
             # Assemble the 2nd sentence using the words
             
-            secondSentence = ("This generous act of {abstract} demonstrated {possessivePronoun}" +
-                             " love of {actionPresentParticiple},")
+            secondSentence = ("The event, which garnered an average attendance of {attendanceAmount}" +
+                              " people, was said to have raised {dollars}. ")
             
-            
+            secondSentenceFormat = secondSentence.format(attendanceAmount = hAttendanceAmount,
+                                                         dollars = hDollars
+                                                         )
             
             # Today Kooly The Bear murdered a filthy flower in a graveyard for
             # the New York Saddle Foundation. The event, which garned an average attendance of 25 people,
@@ -524,19 +532,19 @@ class Headline(object):
                 firstSentenceFormat = firstSentenceFormat.replace("  "," ")
             
               
-            # print("\n")
-            
-            # print("----Today's News----")
-            
-            # print("\n")
-            
-            # print(string.capwords(mainHeadlineFormat))
-            
-            # print("\n")
-            
-            # print(firstSentenceFormat)
-        
-            # print("\n")
+            print("\n")
+           
+            print("----Today's News----")
+           
+            print("\n")
+           
+            print(string.capwords(mainHeadlineFormat))
+           
+            print("\n")
+           
+            print(firstSentenceFormat + secondSentenceFormat)
+       
+            print("\n")
 
             self.main_headline = string.capwords(mainHeadlineFormat)
 
