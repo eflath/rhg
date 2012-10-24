@@ -38,10 +38,27 @@ def randomSelection(list):
     
     return random.choice(list)
     
-def randomWord(*file):
+def randomWord(csvfile):
     """returns a random word dict"""
     
-    return randomSelection(assemble_csv(*file))
+    return randomSelection(assemble_csv(csvfile))
+
+def customWord(csvfile,key,value):
+    """returns a custom word dict"""
+    
+    fullWordList = assemble_csv(csvfile)
+    customWordList = []
+    
+    for each in fullWordList:
+        if each[key] == value:
+            customWordList.append(each)
+    return random.choice(customWordList)
+
+
+    
+   
+
+
 
 
 def randomQuantity():
