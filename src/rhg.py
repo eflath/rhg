@@ -6,6 +6,8 @@ import random
 import csv
 import pprint
 import string
+import locale
+
 
 import cgitb
 cgitb.enable()
@@ -21,7 +23,7 @@ pp = pprint.PrettyPrinter(indent=4)
 
 
 def assemble_csv(*csvFile):
-    """returns a combined list of the specified csv's"""
+    """returns a list of dictionaries, each dictionary representing a horizontal row in the file"""
 
     csvList = []
 
@@ -43,24 +45,50 @@ def randomWord(csvfile):
     
     return randomSelection(assemble_csv(csvfile))
 
-def customWord(csvfile,key,value):
-    """returns a custom word dict"""
+def customWord(csvfile,filter):
+    """returns a custom word (dict) by searching the provided csv for words
+    that match what is in the filter.  The filter should be provided in
+    dict format like {"uscapitals" = "1", "human" : "1"}
+    """
+    
+    # create a list of all of the words in the csv.  Each word is a dict
+    # with multiple "attributes"
     
     fullWordList = assemble_csv(csvfile)
+    
+    # create an empty list to eventually be filled with words that match
+    # the filter(s)
+    
     customWordList = []
     
-    for each in fullWordList:
-        if each[key] == value:
-            customWordList.append(each)
+    # for every word in the full list of words, check to see if it matches
+    # the filter.  If it matches, add it to the custom word list, otherwise
+    # move on to the next.
+    
+    for word in fullWordList:
+        newWord = _customWordFilter(word,filter)
+        if newWord:
+            customWordList.append(newWord)
+                
+    
+    # return one random word from the custom filtered word list
+    
     return random.choice(customWordList)
 
+def _customWordFilter(word,filter):
+    """returns a word(dict) if it has a key/value pair that matches
+    the filter
+    """
+    
+    # for each filter, if the word has a matching key/value pair,
+    # return the word.  If not, return None.
 
     
-   
-
-
-
-
+    for (key,value) in filter.items():
+        if word[key] != value:
+            return
+    return word
+            
 def randomQuantity():
     singularOrPluralList = ["singular", "plural"]
 
@@ -100,12 +128,16 @@ def numberToString(number):
         if each["number"] == number:
             return each["string"]
         
-#def money():
-#    
-#    random.randrange(2,5000000)
-#    
-#
-#        
+
+def dollars(amount):
+    
+    locale.setlocale( locale.LC_ALL, '' )
+    
+    convertedAmount = locale.currency( amount, grouping=True )
+    
+    convertedAmount = convertedAmount.split(".")
+        
+    return convertedAmount[0]    
 
 
 class Word(object):
