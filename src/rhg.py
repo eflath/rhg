@@ -454,13 +454,6 @@ class Headline(object):
             elif hSubjectQuantity > 1:
                 hSubjectQuantity = numberToString(str(hSubject.quantity))
                 
-            
-            # if "a" is going to be used as an article for the object, use
-            # the adjective's article instead since it directly precedes
-            # the adjective 
-                
-            if hObjectQuantifier == hObject.article:
-                hObjectQuantifier = hObjectAdjective.article
                 
             # Assemble the 1st sentence using the words
             #
