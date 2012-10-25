@@ -215,9 +215,16 @@ class Noun(Word):
         return self.definition["plural"]
     
     @property
-    def gender(self):
-        return self.definition["gender"]
+    def proper(self):
+        return self.definition["proper"]
     
+    @property
+    def gender(self):
+        if "gender" in self.definition:
+            return self.definition["gender"]
+        else:
+            return "neuter"
+        
     @property
     def article(self):
         if self.definition["article"] == "":
@@ -279,9 +286,7 @@ class NounAnimate(Noun):
             self.quantity = quantity["number"]
             self.form = quantity["form"]
                         
-    @property
-    def proper(self):
-        return self.definition["proper"]
+    
 
 
 class Adjective(Word):
@@ -333,8 +338,11 @@ class Pronoun(Word):
         # it can match the appropriate dictionary in the pronoun list
         
         if pov == "3rd":
-            gender = str.capitalize(noun.gender)
-            pov = (pov + gender)
+            if noun.gender:
+                gender = str.capitalize(noun.gender)
+                pov = (pov + gender)
+            else:
+                pov = "3rdNeuter"
         
         # declare the definition method since for some reason it can't be while nested
         
@@ -368,8 +376,17 @@ class Pronoun(Word):
         return self.definition["reflexive"]
     
     @property
-    def reflexive(self):
+    def have(self):
         return self.definition["have"]
+    
+    @property
+    def demonstrativeClose(self):
+        return self.definition["demonstrative close"]
+    
+    @property
+    def demonstrativeFar(self):
+        return self.definition["demonstrative far"]
+    
 
 
 class Headline(object):
@@ -483,6 +500,36 @@ class Headline(object):
                                                          dollars = hDollars
                                                          )
             
+            
+            # Create the words necessary for the 3rd sentence
+            
+            hSubjectPronoun1st = Pronoun(hSubject,pov = "1st")
+            hPlacePronounDemonstrative = Pronoun(hPlace,pov = "3rd").demonstrativeClose
+            
+
+            if hPlace.proper == "1":
+                print("\n\nhPlace is proper!!!!!!!\n\n")
+                hPlacePronounDemonstrative = ""
+            
+            print("\n\n/////////////////////////\n\n")
+            print(type(hPlacePronounDemonstrative))
+            print("\n\n/////////////////////////\n\n")
+            
+            # Assemble the 3rd sentence using the words
+            
+            thirdSentence = ("{beginQuote}{subjectPronoun1stHave} been coming to {placePronounDemonstrative}")
+            
+            
+            #thirdSentence = ("{pronoun1stHave} been coming to {this} {place} for {numberOfYears} years. " +
+            #                 "People love to watch {Pronoun} {actionInfinitive} {thisThese} {object} and " +
+            #                 "{Pronoun} {emotion} every second of it.")
+            
+            thirdSentenceFormat = thirdSentence.format(beginQuote = "\"",
+                                                       subjectPronoun1stHave = hSubjectPronoun1st.have,
+                                                       placePronounDemonstrative = hPlacePronounDemonstrative
+                                                       )
+            
+            
             # Today Kooly The Bear murdered a filthy flower in a graveyard for
             # the New York Saddle Foundation. The event, which garned an average attendance of 25 people,
             # was said to have raised $25,000.
@@ -542,7 +589,7 @@ class Headline(object):
            
             print("\n")
            
-            print(firstSentenceFormat + secondSentenceFormat)
+            print(firstSentenceFormat + secondSentenceFormat + thirdSentenceFormat)
        
             print("\n")
 
@@ -638,6 +685,12 @@ def main():
 
 character = Noun(randomWord(CSV_RELATIVE_PATH+"/rhg_nAnimate.csv"),randomQuantity())
 characterPronoun = Pronoun(character,pov = "3rd")
+
+hPlace = Noun(randomWord(CSV_RELATIVE_PATH+"/rhg_nPlaces.csv"))
+hPlacePronounDemonstrative = Pronoun(hPlace,pov = "3rd")
+
+
+
 
 print("\nCharacter: " + character.name)
 print("\nCharacter Form: " + character.form)

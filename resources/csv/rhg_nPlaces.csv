@@ -1,128 +1,128 @@
-singular,plural,article,prepositions,uscapital
-Afghanistan,,,in,0
-airplane,,an,"in,on top of,beneath",0
-airplane cockpit,,an,in,0
-airport bathroom,,an,in,0
-airport runway,,an,on,0
-aquarium,,an,"at,in",0
-barn,,a,in,0
-basement,,a,in,0
-bath tub,,a,in,0
-bathroom,,a,"in,inside",0
-bathroom stall,,a,"in,inside",0
-bed,,a,"inside,on top of",0
-boat,,a,"on,on top of",0
-chicken coop,,a,in,0
-church,,a,"in,inside,near,on top of",0
-city dump,,a,at,0
-classroom,,a,"in,inside,outside",0
-college campus,,a,"on,near",0
-cruise ship,,a,on,0
-daycare center,,a,in,0
-Delaware,,,in,0
-dentist waiting room,,a,in,0
-doctor's office,,a,"in,near",0
-dog house,,a,in,0
-drain pipe,,a,in,0
-Egypt,,,in,0
-forest,,a,in,0
-France,,,in,0
-garbage can,,a,"in,next to",0
-Gazebo,,a,"in,near,inside",0
-Germany,,,in,0
-gym locker,,a,in,0
-haunted house,,a,"in,near,next to,on top of",0
-hiking trail,,a,"near,on,next to",0
-indian reservation,,an,at,0
-Iraq,,,in,0
-Italy,,,in,0
-jail cell,,a,in,0
-kitchen cabinet,,a,in,0
-laboratory,,a,in,0
-Libya,,,in,0
-local fire station,,a,"in,inside,near,on top of",0
-local library,,a,"in,inside,near,on top of",0
-local parking lot,,a,at,0
-local police station,,a,in,0
-local shopping mall,,a,at,0
-mass grave,,a,in,0
-missile silo,,a,"inside,next to",0
-moon crater,,a,in,0
-Mount Everest,,,"on,on top of",0
-music festival,,a,"at, near",0
-neighborhood bar,,a,"at, in",0
-ocean,,the,"inside,near,underneath",0
-park bench,,a,on,0
-pizzeria,,a,"inside,outside,on top of,next to",0
-playground,,a,"at,next to,near",0
-pool,,a,in,0
-portable toilet,,a,in,0
-principal's office,,a,in,0
-prison cell,,a,in,0
-recording studio,,a,in,0
-recycling center,,a,at,0
-roof,,a,on,0
-school property,,,"on,near,next to",0
-sewer,,a,in,0
-Spain,,,in,0
-subway car,,a,"in,on top of",0
-supermarket,,a,"at, in",0
-Sweden,,,in,0
-table,,a,"on top of, under",0
-tool shed,,a,in,0
-town hall meeting,,a,"in, during",0
-treasure chest,,a,"inside,next to",0
-volcano,,a,"inside,on top of,next to",0
-White House,,the,"inside,outside,underneath, ",0
-wine cellar,,a,in,0
-zoo,,a,"in,near",0
-Montgomery,,,in,1
-Juneau,,,in,1
-Phoenix,,,in,1
-Little Rock,,,in,1
-Sacramento,,,in,1
-Denver,,,in,1
-Hartford,,,in,1
-Tallahassee,,,in,1
-Atlanta,,,in,1
-Honolulu,,,in,1
-Boise,,,in,1
-Springfield,,,in,1
-Indianapolis,,,in,1
-Des Moines,,,in,1
-Topeka,,,in,1
-Frankfort,,,in,1
-Baton Rouge,,,in,1
-Augusta,,,in,1
-Annapolis,,,in,1
-Boston,,,in,1
-Lansing,,,in,1
-Saint Paul,,,in,1
-Jackson,,,in,1
-Jefferson City,,,in,1
-Helena,,,in,1
-Lincoln,,,in,1
-Carson City,,,in,1
-Concord,,,in,1
-Trenton,,,in,1
-Santa Fe,,,in,1
-Albany,,,in,1
-Raleigh,,,in,1
-Bismarck,,,in,1
-Columbus,,,in,1
-Oklahoma City,,,in,1
+singular,plural,article,prepositions,proper,uscapital
+airplane,,an,"in,on top of,beneath",0,0
+airplane cockpit,,an,in,0,0
+airport bathroom,,an,in,0,0
+airport runway,,an,on,0,0
+aquarium,,an,"at,in",0,0
+barn,,a,in,0,0
+basement,,a,in,0,0
+bath tub,,a,in,0,0
+bathroom,,a,"in,inside",0,0
+bathroom stall,,a,"in,inside",0,0
+bed,,a,"inside,on top of",0,0
+boat,,a,"on,on top of",0,0
+chicken coop,,a,in,0,0
+church,,a,"in,inside,near,on top of",0,0
+city dump,,a,at,0,0
+classroom,,a,"in,inside,outside",0,0
+college campus,,a,"on,near",0,0
+cruise ship,,a,on,0,0
+daycare center,,a,in,0,0
+dentist waiting room,,a,in,0,0
+doctor's office,,a,"in,near",0,0
+dog house,,a,in,0,0
+drain pipe,,a,in,0,0
+forest,,a,in,0,0
+garbage can,,a,"in,next to",0,0
+Gazebo,,a,"in,near,inside",0,0
+gym locker,,a,in,0,0
+haunted house,,a,"in,near,next to,on top of",0,0
+hiking trail,,a,"near,on,next to",0,0
+indian reservation,,an,at,0,0
+jail cell,,a,in,0,0
+kitchen cabinet,,a,in,0,0
+laboratory,,a,in,0,0
+local fire station,,a,"in,inside,near,on top of",0,0
+local library,,a,"in,inside,near,on top of",0,0
+local parking lot,,a,at,0,0
+local police station,,a,in,0,0
+local shopping mall,,a,at,0,0
+mass grave,,a,in,0,0
+missile silo,,a,"inside,next to",0,0
+moon crater,,a,in,0,0
+music festival,,a,"at, near",0,0
+neighborhood bar,,a,"at, in",0,0
+ocean,,the,"inside,near,underneath",0,0
+park bench,,a,on,0,0
+pizzeria,,a,"inside,outside,on top of,next to",0,0
+playground,,a,"at,next to,near",0,0
+pool,,a,in,0,0
+portable toilet,,a,in,0,0
+principal's office,,a,in,0,0
+prison cell,,a,in,0,0
+recording studio,,a,in,0,0
+recycling center,,a,at,0,0
+roof,,a,on,0,0
+school property,,,"on,near,next to",0,0
+sewer,,a,in,0,0
+subway car,,a,"in,on top of",0,0
+supermarket,,a,"at, in",0,0
+table,,a,"on top of, under",0,0
+tool shed,,a,in,0,0
+town hall meeting,,a,"in, during",0,0
+treasure chest,,a,"inside,next to",0,0
+volcano,,a,"inside,on top of,next to",0,0
+wine cellar,,a,in,0,0
+zoo,,a,"in,near",0,0
+Afghanistan,,,in,1,0
+Delaware,,,in,1,0
+Egypt,,,in,1,0
+France,,,in,1,0
+Germany,,,in,1,0
+Iraq,,,in,1,0
+Italy,,,in,1,0
+Libya,,,in,1,0
+Mount Everest,,,"on,on top of",1,0
+Spain,,,in,1,0
+Sweden,,,in,1,0
+White House,,the,"inside,outside,underneath, ",1,0
+Montgomery,,,in,1,1
+Juneau,,,in,1,1
+Phoenix,,,in,1,1
+Little Rock,,,in,1,1
+Sacramento,,,in,1,1
+Denver,,,in,1,1
+Hartford,,,in,1,1
+Tallahassee,,,in,1,1
+Atlanta,,,in,1,1
+Honolulu,,,in,1,1
+Boise,,,in,1,1
+Springfield,,,in,1,1
+Indianapolis,,,in,1,1
+Des Moines,,,in,1,1
+Topeka,,,in,1,1
+Frankfort,,,in,1,1
+Baton Rouge,,,in,1,1
+Augusta,,,in,1,1
+Annapolis,,,in,1,1
+Boston,,,in,1,1
+Lansing,,,in,1,1
+Saint Paul,,,in,1,1
+Jackson,,,in,1,1
+Jefferson City,,,in,1,1
+Helena,,,in,1,1
+Lincoln,,,in,1,1
+Carson City,,,in,1,1
+Concord,,,in,1,1
+Trenton,,,in,1,1
+Santa Fe,,,in,1,1
+Albany,,,in,1,1
+Raleigh,,,in,1,1
+Bismarck,,,in,1,1
+Columbus,,,in,1,1
+Oklahoma City,,,in,1,1
 Salem,,,"in
-",1
-Harrisburg,,,in,1
-Providence,,,in,1
-Columbia,,,in,1
-Pierre,,,in,1
-Nashville,,,in,1
-Austin,,,in,1
-Salt Lake City,,,in,1
-Montpelier,,,in,1
-Richmond,,,in,1
-Olympia,,,in,1
-Charleston,,,in,1
-Madison,,,in,1
-Cheyenne,,,in,1
+",1,1
+Harrisburg,,,in,1,1
+Providence,,,in,1,1
+Columbia,,,in,1,1
+Pierre,,,in,1,1
+Nashville,,,in,1,1
+Austin,,,in,1,1
+Salt Lake City,,,in,1,1
+Montpelier,,,in,1,1
+Richmond,,,in,1,1
+Olympia,,,in,1,1
+Charleston,,,in,1,1
+Madison,,,in,1,1
+Cheyenne,,,in,1,1
