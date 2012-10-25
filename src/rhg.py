@@ -505,7 +505,7 @@ class Headline(object):
             
             hSubjectPronoun1st = Pronoun(hSubject,pov = "1st")
             hPlacePronounDemonstrative = Pronoun(hPlace,pov = "3rd").demonstrativeClose
-            
+            hObjectPronoun3rd = Pronoun(hObject,pov = "3rd")
 
             if hPlace.proper == "1":
                 print("\n\nhPlace is proper!!!!!!!\n\n")
@@ -517,7 +517,10 @@ class Headline(object):
             
             # Assemble the 3rd sentence using the words
             
-            thirdSentence = ("{beginQuote}{subjectPronoun1stHave} been coming to {placePronounDemonstrative}")
+            thirdSentence = ("{beginQuote}{subjectPronoun1stHave} been coming to {placePronounDemonstrative} " +
+                            "{place} for {numberOfYears} years. People love to watch {subjectPronoun1stObject} " +
+                            "{actionInfinitive} {objectPronoun3rdDemonstrative} {theobject} and {SubjectPronoun1stSubject} " +
+                            "love every second of it!{endQuote}")
             
             
             #thirdSentence = ("{pronoun1stHave} been coming to {this} {place} for {numberOfYears} years. " +
@@ -525,8 +528,16 @@ class Headline(object):
             #                 "{Pronoun} {emotion} every second of it.")
             
             thirdSentenceFormat = thirdSentence.format(beginQuote = "\"",
-                                                       subjectPronoun1stHave = hSubjectPronoun1st.have,
-                                                       placePronounDemonstrative = hPlacePronounDemonstrative
+                                                       subjectPronoun1stHave = hSubjectPronoun1st.have.capitalize(),
+                                                       placePronounDemonstrative = hPlacePronounDemonstrative,
+                                                       place = hPlace.name,
+                                                       numberOfYears = str(random.randint(2,79)),
+                                                       subjectPronoun1stObject = hSubjectPronoun1st.object,
+                                                       actionInfinitive = hAction.infinitive,
+                                                       objectPronoun3rdDemonstrative = hObjectPronoun3rd.demonstrativeClose,
+                                                       theobject = hObject.name,
+                                                       SubjectPronoun1stSubject = hSubjectPronoun1st.subject,
+                                                       endQuote = "\""
                                                        )
             
             
