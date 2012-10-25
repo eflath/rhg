@@ -469,7 +469,7 @@ class Headline(object):
             
             
             firstSentence = ("Today {subjectArticle} {subjectQuantity} {subject} {actionPast}" +
-                            " {objectQuantifier} {objectAdjective} {theObject} {placePreposition}" +
+                            " {objectQuantifier} {theObject} {placePreposition}" +
                             " {placeArticle} {place} for the {foundationCity} {foundationObject} Foundation. ")
             
             firstSentenceFormat = firstSentence.format(subjectArticle = hSubjectArticle,
@@ -477,7 +477,6 @@ class Headline(object):
                                                        subject = hSubject.name,
                                                        actionPast = hAction.past,
                                                        objectQuantifier = hObjectQuantifier,
-                                                       objectAdjective = hObjectAdjective.positive,
                                                        theObject = hObject.name,
                                                        placePreposition = hPlace.prepositions,
                                                        placeArticle = hPlace.article,
@@ -541,25 +540,6 @@ class Headline(object):
                                                        )
             
             
-            # Today Kooly The Bear murdered a filthy flower in a graveyard for
-            # the New York Saddle Foundation. The event, which garned an average attendance of 25 people,
-            # was said to have raised $25,000.
-            
-            # Kentucky Dog Hospital, 
-            #
-            # "I've been coming to this graveyard for twenty-five years.  People love to watch
-            # me murder these flowers and I love every second of it.
-            #
-            # "We've been coming to this graveyard for twenty-five years. People love to watch
-            # us murder these flowers and we love every minute of it.
-            #
-            # {HaveContractionFirstPersonPresent} been coming to this {place} for {number2-50}. People {emotionLoveOrHate}
-            # {objectPronoun} {actionInfinitive} and we {emotionLoveOrHate} every {randomAmountOfTime} of it
-            #
-            #
-            
-            # raised money
-            # much to be proud of
             # will continue to make a positive impact in the years ahead
             
             
@@ -588,6 +568,14 @@ class Headline(object):
             if "  " in firstSentenceFormat:
                 # print("\nthere's a double space in the sentence.. repairing.\n")
                 firstSentenceFormat = firstSentenceFormat.replace("  "," ")
+                
+            if "   " in thirdSentenceFormat:
+                # print("\nthere's a triple space in the sentence.. repairing.\n")
+                thirdSentenceFormat = thirdSentenceFormat.replace("   "," ")
+            
+            if "  " in thirdSentenceFormat:
+                # print("\nthere's a double space in the sentence.. repairing.\n")
+                thirdSentenceFormat = thirdSentenceFormat.replace("  "," ")    
             
               
             print("\n")
