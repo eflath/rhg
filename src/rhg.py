@@ -505,15 +505,15 @@ class Headline(object):
             
             hSubjectPronoun1st = Pronoun(hSubject,pov = "1st")
             hPlacePronounDemonstrative = Pronoun(hPlace,pov = "3rd").demonstrativeClose
-            hObjectPronoun3rd = Pronoun(hObject,pov = "3rd")
-
-            if hPlace.proper == "1":
-                print("\n\nhPlace is proper!!!!!!!\n\n")
-                hPlacePronounDemonstrative = ""
+            hObjectPronoun3rd = Pronoun(hObject,pov = "3rd").demonstrativeClose
             
-            print("\n\n/////////////////////////\n\n")
-            print(type(hPlacePronounDemonstrative))
-            print("\n\n/////////////////////////\n\n")
+            # If the object is not countable, use "this" as its close demonstrative pronoun,
+            # because otherwise it sounds strange.. i.e. : Given the object blood, it would write
+            # "People love to watch me eat these blood" if blood were plural
+            
+            if hObject.countable == "0":
+                hObjectPronoun3rd = "this"
+
             
             # Assemble the 3rd sentence using the words
             
@@ -534,7 +534,7 @@ class Headline(object):
                                                        numberOfYears = str(random.randint(2,79)),
                                                        subjectPronoun1stObject = hSubjectPronoun1st.object,
                                                        actionInfinitive = hAction.infinitive,
-                                                       objectPronoun3rdDemonstrative = hObjectPronoun3rd.demonstrativeClose,
+                                                       objectPronoun3rdDemonstrative = hObjectPronoun3rd,
                                                        theobject = hObject.name,
                                                        SubjectPronoun1stSubject = hSubjectPronoun1st.subject,
                                                        endQuote = "\""
