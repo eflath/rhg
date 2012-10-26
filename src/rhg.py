@@ -141,7 +141,7 @@ def dollars(amount):
 
 def weightedDonationAmount():
     
-    rangeMasterList = [[2,500],[2,500],[2,500],[2,100],[2,100],[2,50],[2,50],[2,5000000]]
+    rangeMasterList = [[2,5000000],[2,500000],[2,10000],[2,5000],[2,500],[2,50]]
     
     randomRange = random.choice(rangeMasterList)
     
@@ -440,6 +440,19 @@ class Headline(object):
             hPlaceAdjective = Adjective(randomWord(CSV_RELATIVE_PATH+"/rhg_adjectives.csv"))
             hFoundationCity = Noun(customWord(CSV_RELATIVE_PATH+"/rhg_nPlaces.csv",{"uscapital" : "1"}))
             hFoundationObject = Noun(randomWord(CSV_RELATIVE_PATH+"/rhg_nInanimate.csv"),randomQuantity())
+            hFoundationSuffix = random.choice(["Foundation","Institute","Alliance","Hospital","Association","Conservancy",
+                                               "Society","Trust","Committee","Fund"])
+                                               
+
+
+
+
+
+
+
+
+
+
             
             # if the subject is a singular common noun use its article
             # if the subject is a proper noun, ignore..
@@ -471,7 +484,7 @@ class Headline(object):
             
             firstSentence = ("Today {subjectArticle} {subjectQuantity} {subject} {actionPast}" +
                             " {objectQuantifier} {theObject} {placePreposition}" +
-                            " {placeArticle} {place} for the {foundationCity} {foundationObject} Foundation. ")
+                            " {placeArticle} {place} for the {foundationCity} {foundationObject} {foundationSuffix}. ")
             
             firstSentenceFormat = firstSentence.format(subjectArticle = hSubjectArticle,
                                                        subjectQuantity = hSubjectQuantity,
@@ -483,20 +496,39 @@ class Headline(object):
                                                        placeArticle = hPlace.article,
                                                        place = hPlace.name,
                                                        foundationCity = hFoundationCity.name,
-                                                       foundationObject = hFoundationObject.singular.capitalize()
+                                                       foundationObject = hFoundationObject.singular.capitalize(),
+                                                       foundationSuffix = hFoundationSuffix
                                                        )
             
             # Create the words necessary for the 2nd sentence
             
             hAttendanceAmount = random.randint(2,998)
-            hDollars = dollars(weightedDonationAmount())
+            hDollarsInt = weightedDonationAmount()
+            hDollars = dollars(hDollarsInt)
+            hDollarsAdjective = ["a paltry","a dissapointing","an astonishing"]
+            
+            # Choose an adjective for the dollar amount based on how high are low it is..
+            
+            if hDollarsInt < 500:
+                hDollarsAdjective = hDollarsAdjective[0]
+                
+            elif hDollarsInt >= 500 and hDollarsInt <= 2500:
+                hDollarsAdjective = hDollarsAdjective[1]
+                
+            elif hDollarsInt >= 500000:
+                hDollarsAdjective = hDollarsAdjective[2]    
+                
+            else:
+                hDollarsAdjective = ""
+            
             
             # Assemble the 2nd sentence using the words
             
             secondSentence = ("The event, which garnered an average attendance of {attendanceAmount}" +
-                              " people, was said to have raised {dollars}. ")
+                              " people, was said to have raised {dollarsAdjective} {dollars}. ")
             
             secondSentenceFormat = secondSentence.format(attendanceAmount = hAttendanceAmount,
+                                                         dollarsAdjective = hDollarsAdjective,
                                                          dollars = hDollars
                                                          )
             
@@ -504,23 +536,37 @@ class Headline(object):
             # Create the words necessary for the 3rd sentence
             
             hSubjectPronoun1st = Pronoun(hSubject,pov = "1st")
-            hPlacePronounDemonstrative = Pronoun(hPlace,pov = "3rd").demonstrativeClose
-            hObjectPronoun3rd = Pronoun(hObject,pov = "3rd").demonstrativeClose
+            hPlacePronoun3rd = Pronoun(hPlace,pov = "3rd")
+            hPlacePronounDemonstrativeClose = hPlacePronoun3rd.demonstrativeClose
+            hObjectPronoun3rd = Pronoun(hObject,pov = "3rd")
+            hObjectPronoun3rdDemonstrativeClose = hObjectPronoun3rd.demonstrativeClose
+            hSubjectQuantifier = ""
             
             # If the object is not countable, use "this" as its close demonstrative pronoun,
             # because otherwise it sounds strange.. i.e. : Given the object blood, it would write
             # "People love to watch me eat these blood" if blood were plural
             
+            
+            if hPlace.proper == "1":
+                hPlacePronounDemonstrativeClose = ""
+            
             if hObject.countable == "0":
-                hObjectPronoun3rd = "this"
+                hObjectPronoun3rdDemonstrativeClose = "this"
 
+            if hSubject.form == "singular" and hSubject.proper == "0":
+                hSubjectQuantifier = "the"
+                
+            if hSubject.form == "plural":
+                hSubjectQuantifier = "one of the"
+            
+            
             
             # Assemble the 3rd sentence using the words
             
             thirdSentence = ("{beginQuote}{subjectPronoun1stHave} been coming to {placePronounDemonstrative} " +
                             "{place} for {numberOfYears} years. People love to watch {subjectPronoun1stObject} " +
                             "{actionInfinitive} {objectPronoun3rdDemonstrative} {theobject} and {SubjectPronoun1stSubject} " +
-                            "love every second of it!{endQuote}")
+                            "love every second of it!{endQuote}, explained {subjectQuantifier} {subject}.")
             
             
             #thirdSentence = ("{pronoun1stHave} been coming to {this} {place} for {numberOfYears} years. " +
@@ -529,14 +575,16 @@ class Headline(object):
             
             thirdSentenceFormat = thirdSentence.format(beginQuote = "\"",
                                                        subjectPronoun1stHave = hSubjectPronoun1st.have.capitalize(),
-                                                       placePronounDemonstrative = hPlacePronounDemonstrative,
+                                                       placePronounDemonstrative = hPlacePronounDemonstrativeClose,
                                                        place = hPlace.name,
                                                        numberOfYears = str(random.randint(2,79)),
                                                        subjectPronoun1stObject = hSubjectPronoun1st.object,
                                                        actionInfinitive = hAction.infinitive,
-                                                       objectPronoun3rdDemonstrative = hObjectPronoun3rd,
+                                                       objectPronoun3rdDemonstrative = hObjectPronoun3rdDemonstrativeClose,
                                                        theobject = hObject.name,
                                                        SubjectPronoun1stSubject = hSubjectPronoun1st.subject,
+                                                       subjectQuantifier = hSubjectQuantifier,
+                                                       subject = hSubject.name,
                                                        endQuote = "\""
                                                        )
             
@@ -569,7 +617,15 @@ class Headline(object):
             if "  " in firstSentenceFormat:
                 # print("\nthere's a double space in the sentence.. repairing.\n")
                 firstSentenceFormat = firstSentenceFormat.replace("  "," ")
-                
+            
+            if "  " in secondSentenceFormat:
+                # print("\nthere's a double space in the sentence.. repairing.\n")
+                secondSentenceFormat = secondSentenceFormat.replace("  "," ")
+            
+            if "  " in secondSentenceFormat:
+                # print("\nthere's a double space in the sentence.. repairing.\n")
+                secondSentenceFormat = secondSentenceFormat.replace("  "," ")
+               
             if "   " in thirdSentenceFormat:
                 # print("\nthere's a triple space in the sentence.. repairing.\n")
                 thirdSentenceFormat = thirdSentenceFormat.replace("   "," ")
