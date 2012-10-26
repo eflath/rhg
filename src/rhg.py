@@ -139,7 +139,15 @@ def dollars(amount):
         
     return convertedAmount[0]    
 
-
+def weightedDonationAmount():
+    
+    rangeMasterList = [[2,500],[2,500],[2,500],[2,100],[2,100],[2,50],[2,50],[2,5000000]]
+    
+    randomRange = random.choice(rangeMasterList)
+    
+    print(randomRange)
+    
+    return random.randint(randomRange[0],randomRange[1])
 
 
 
@@ -481,7 +489,7 @@ class Headline(object):
             # Create the words necessary for the 2nd sentence
             
             hAttendanceAmount = random.randint(2,998)
-            hDollars = dollars(random.randint(2,5000000))
+            hDollars = dollars(weightedDonationAmount())
             
             # Assemble the 2nd sentence using the words
             
