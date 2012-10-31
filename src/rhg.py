@@ -45,7 +45,7 @@ def randomWord(csvfile):
     
     return randomSelection(assemble_csv(csvfile))
 
-def customWord(csvfile,filter):
+def customWord(csvfile,filter,rand = True):
     """returns a custom word (dict) by searching the provided csv for words
     that match what is in the filter.  The filter should be provided in
     dict format like {"uscapitals" = "1", "human" : "1"}
@@ -71,9 +71,17 @@ def customWord(csvfile,filter):
             customWordList.append(newWord)
                 
     
-    # return one random word from the custom filtered word list
+    # if rand is true, return one random word from the custom filtered word list
     
-    return random.choice(customWordList)
+    if rand == True:
+        return random.choice(customWordList)
+    
+    # if rand is false, return the entire custom word list
+    
+    else:
+        return customWordList
+        
+          
 
 def _customWordFilter(word,filter):
     """returns a word(dict) if it has a key/value pair that matches
@@ -150,7 +158,23 @@ def weightedDonationAmount():
     return random.randint(randomRange[0],randomRange[1])
 
 
-
+def randomName(gender = "m"):
+    
+    firstNameList = customWord(CSV_RELATIVE_PATH + "/rhg_firstNames.csv",{"gender" : gender},rand = False)
+    lastNameList = assemble_csv(CSV_RELATIVE_PATH+"/rhg_lastNames.csv") 
+    
+    print(firstNameList)
+    
+    randomName = random.choice(firstNameList)
+    randomLastName = random.choice(lastNameList)
+    
+    for k,v in randomLastName.items():
+        randomName[k] = v
+        
+    print("\n\n" + randomName["first"] + " " + randomName["last"] + "\n\n")
+        
+        
+    return randomName
 
 class Word(object):
     
