@@ -29,7 +29,7 @@ def randomSelection(list):
 def randomWord(csvfile):
     """returns a random word dict"""
     
-    return randomSelection(csvToDict(csvfile))
+    return random.choice(csvToDict(csvfile))
 
 
 def csvToDict(csvfile,filter = 0,rand = False):
@@ -41,21 +41,42 @@ def csvToDict(csvfile,filter = 0,rand = False):
     # return a list of dictionaries, each dictionary representing a horizontal
     # row in the csv
     
+    print("\n\n")
+    print(csvfile)
+    print("\n\n")
+    
+    print("\n\n")
+    print("Does the csv file exist?")
+    print(os.path.isfile(csvfile))
+    print("\n\n")
+    
+    newCsvfile = os.path.abspath(csvfile)
+    print("\n\n")
+    print(newCsvfile)
+    print("\n\n")
+        
+    print("\n\n")
+    print("Does the new csv file exist?")
+    print(os.path.isfile(newCsvfile))
+    print("\n\n")
+    
     
     dictList = []
 
-    for each in csvfile:
-        csvReader = csv.DictReader(open(each, "rb"))
-        for each in csvReader:
-            dictList.append(each)
+
+    csvReader = csv.DictReader(open(csvfile, "rb"))
+    for each in csvReader:
+        dictList.append(each)
+    
+    
+    # create an empty list to eventually be filled with words that match
+        # the filter(s)
+        
+    filteredDictList = []
     
     
     if filter is not 0:
         
-        # create an empty list to eventually be filled with words that match
-        # the filter(s)
-        
-        filteredDictList = []
         
         # for every word in the full list of words, check to see if it matches
         # the filter.  If it matches, add it to the custom word list, otherwise
@@ -463,7 +484,7 @@ class Headline(object):
             hPlace = Noun(randomWord(CSV_RELATIVE_PATH+"/rhg_nPlaces.csv"))
             hPlaceAdjective = Adjective(randomWord(CSV_RELATIVE_PATH+"/rhg_adjectives.csv"))
             hFoundationCity = Noun(csvToDict(CSV_RELATIVE_PATH+"/rhg_nPlaces.csv",{"uscapital" : "1"}))
-            hFoundationObject = Noun(randomWord(CSV_RELATIVE_PATH+"/rhg_nInanimate.csv"),randomQuantity())
+            hFoundationObject = None #Noun(randomWord(CSV_RELATIVE_PATH+"/rhg_nInanimate.csv"),randomQuantity())
             hFoundationSuffix = random.choice(["Foundation","Institute","Alliance","Hospital","Association","Conservancy",
                                                "Society","Trust","Committee","Fund"])
                                                
@@ -519,8 +540,8 @@ class Headline(object):
                                                        placePreposition = hPlace.prepositions,
                                                        placeArticle = hPlace.article,
                                                        place = hPlace.name,
-                                                       foundationCity = hFoundationCity.name,
-                                                       foundationObject = hFoundationObject.singular.capitalize(),
+                                                       foundationCity = "horse", #hFoundationCity.name,
+                                                       foundationObject = "city", #hFoundationObject.singular.capitalize(),
                                                        foundationSuffix = hFoundationSuffix
                                                        )
             
