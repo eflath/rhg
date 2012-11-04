@@ -21,52 +21,36 @@ test = []
 
 pp = pprint.PrettyPrinter(indent=4)
 
-def randomSelection(list):
-    """select a random element in a list"""
+ 
+def randomWord(csvfile,filter = 0):
     
-    return random.choice(list)
-    
-def randomWord(csvfile):
     """returns a random word dict"""
     
-    return random.choice(csvToDict(csvfile))
+    return random.choice(csvToDict(csvfile,filter))
 
 
-def csvToDict(csvfile,filter = 0,rand = False):
-    """returns a custom word (dict) by searching the provided csv for words
-    that match what is in the filter.  The filter should be provided in
-    dict format like {"uscapitals" = "1", "human" : "1"}
+def superPrint(myList):
+    
+    for d in myList:
+        print d["singular"]
+
+def csvToDict(csvfile,filter = 0):
+    
+    """returns a list of dicts from the provided csvfile(s), each
+    dict corresponding to a row in the file.  A custom list is
+    returned if the user provides a filter. The filter should be
+    provided in dict format like {"uscapitals" = "1", "human" : "1"}
     """
     
     # return a list of dictionaries, each dictionary representing a horizontal
     # row in the csv
     
-    print("\n\n")
-    print(csvfile)
-    print("\n\n")
-    
-    print("\n\n")
-    print("Does the csv file exist?")
-    print(os.path.isfile(csvfile))
-    print("\n\n")
-    
-    newCsvfile = os.path.abspath(csvfile)
-    print("\n\n")
-    print(newCsvfile)
-    print("\n\n")
-        
-    print("\n\n")
-    print("Does the new csv file exist?")
-    print(os.path.isfile(newCsvfile))
-    print("\n\n")
-    
-    
     dictList = []
 
-
-    csvReader = csv.DictReader(open(csvfile, "rb"))
-    for each in csvReader:
-        dictList.append(each)
+    for f in csvfile:
+        csvReader = csv.DictReader(open(f,"rb"))
+        for each in csvReader:
+            dictList.append(each)
     
     
     # create an empty list to eventually be filled with words that match
@@ -91,15 +75,8 @@ def csvToDict(csvfile,filter = 0,rand = False):
         filteredDictList = dictList
     
     
-    # if rand is true, return one random word from the custom filtered word list
     
-    if rand == True:
-        return random.choice(filteredDictList)
-    
-    # if rand is false, return the entire custom word list
-    
-    else:
-        return filteredDictList
+    return filteredDictList
         
           
 
@@ -137,7 +114,7 @@ def nounToPronoun(gender):
 
 def getQuantifiers(countable):
     
-    quantifierList = csvToDict(CSV_RELATIVE_PATH+"/rhg_quantifiers.csv")
+    quantifierList = csvToDict([CSV_RELATIVE_PATH+"/rhg_quantifiers.csv"])
     
     countableQuantifierList = quantifierList[0]["countable"].split(",")
     uncountableQuantifierList = quantifierList[0]["uncountable"].split(",")
@@ -150,7 +127,7 @@ def getQuantifiers(countable):
     
 def numberToString(number):
     
-    numberToStringList = csvToDict(CSV_RELATIVE_PATH+"/rhg_numbers.csv")
+    numberToStringList = csvToDict([CSV_RELATIVE_PATH+"/rhg_numbers.csv"])
     
 
     for each in numberToStringList:
@@ -174,25 +151,21 @@ def weightedDonationAmount():
     
     randomRange = random.choice(rangeMasterList)
     
-    print(randomRange)
-    
     return random.randint(randomRange[0],randomRange[1])
 
 
 def randomName(gender = "m"):
     
-    firstNameList = csvToDict(CSV_RELATIVE_PATH + "/rhg_firstNames.csv",{"gender" : gender},rand = False)
+    firstNameList = csvToDict(CSV_RELATIVE_PATH + "/rhg_firstNames.csv",{"gender" : gender})
     lastNameList = csvToDict(CSV_RELATIVE_PATH+"/rhg_lastNames.csv") 
-    
-    print(firstNameList)
-    
+       
     randomName = random.choice(firstNameList)
     randomLastName = random.choice(lastNameList)
     
     for k,v in randomLastName.items():
         randomName[k] = v
         
-    print("\n\n" + randomName["first"] + " " + randomName["last"] + "\n\n")
+    # print("\n\n" + randomName["first"] + " " + randomName["last"] + "\n\n")
         
         
     return randomName
@@ -339,7 +312,20 @@ class NounAnimate(Noun):
             self.quantity = quantity["number"]
             self.form = quantity["form"]
                         
+
+class Subject(object):
     
+    """This is the subject class"""
+    
+    def __init__(self,subjects,quantity):
+        pass
+        # subjects is a list of all of the 
+        
+    
+    
+
+
+
 
 
 class Adjective(Word):
@@ -379,13 +365,13 @@ class Pronoun(Word):
         # pronoun list
         
         if noun.form == "singular":
-            pronouns = csvToDict(CSV_RELATIVE_PATH+"/rhg_sPronouns.csv")
+            pronouns = csvToDict([CSV_RELATIVE_PATH+"/rhg_sPronouns.csv"])
             
         # if the noun passed is "plural" then assemble the plural
         # pronoun list    
             
         if noun.form == "plural":
-            pronouns = csvToDict(CSV_RELATIVE_PATH+"/rhg_pPronouns.csv")
+            pronouns = csvToDict([CSV_RELATIVE_PATH+"/rhg_pPronouns.csv"])
         
         # if the pronoun requested is in the "3rd person", append the gender on the end of it so that
         # it can match the appropriate dictionary in the pronoun list
@@ -452,10 +438,10 @@ class Headline(object):
             
             # Create the words necessary for the headline
             
-            hSubject = NounAnimate(randomWord(CSV_RELATIVE_PATH+"/rhg_nAnimate.csv"),randomQuantity())
-            hAction = Verb(randomWord(CSV_RELATIVE_PATH+"/rhg_verbs.csv"))
+            hSubject = NounAnimate(randomWord([CSV_RELATIVE_PATH+"/rhg_nAnimate.csv"]),randomQuantity())
+            hAction = Verb(randomWord([CSV_RELATIVE_PATH+"/rhg_verbs.csv"]))
             hActionTense = ""
-            hObject = Noun(randomWord(CSV_RELATIVE_PATH+"/rhg_nInanimate.csv"),randomQuantity())
+            hObject = Noun(randomWord([CSV_RELATIVE_PATH+"/rhg_nInanimate.csv"]),randomQuantity())
             
             # Assign the appropriate tense of the verb based on whether or not
             # the subject is singular/plural
@@ -480,31 +466,14 @@ class Headline(object):
             hSubjectArticle = hSubject.article
             hSubjectQuantity = hSubject.quantity
             hObjectQuantifier = hObject.quantifiers
-            hObjectAdjective = Adjective(randomWord(CSV_RELATIVE_PATH+"/rhg_adjectives.csv"))
-            hPlace = Noun(randomWord(CSV_RELATIVE_PATH+"/rhg_nPlaces.csv"))
-            hPlaceAdjective = Adjective(randomWord(CSV_RELATIVE_PATH+"/rhg_adjectives.csv"))
-            hFoundationCity = Noun(csvToDict(CSV_RELATIVE_PATH+"/rhg_nPlaces.csv",{"uscapital" : "1"}))
-            hFoundationObject = None #Noun(randomWord(CSV_RELATIVE_PATH+"/rhg_nInanimate.csv"),randomQuantity())
+            hObjectAdjective = Adjective(randomWord([CSV_RELATIVE_PATH+"/rhg_adjectives.csv"]))
+            hPlace = Noun(randomWord([CSV_RELATIVE_PATH+"/rhg_nPlaces.csv"]))
+            hPlaceAdjective = Adjective(randomWord([CSV_RELATIVE_PATH+"/rhg_adjectives.csv"]))
+            hFoundationCity = Noun(randomWord([CSV_RELATIVE_PATH+"/rhg_nPlaces.csv"],{"uscapital" : "1"}))
+            hFoundationObject = Noun(randomWord([CSV_RELATIVE_PATH+"/rhg_nInanimate.csv"]),randomQuantity())
             hFoundationSuffix = random.choice(["Foundation","Institute","Alliance","Hospital","Association","Conservancy",
                                                "Society","Trust","Committee","Fund"])
                                                
-
-
-
-            print("\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n")
-            
-            print("\n")
-            print("hFoundationCity:")
-            print(hFoundationCity)
-            print(dir(hFoundationCity))
-            print("hFoundationObject:")
-            print(hFoundationObject)
-            print("\n")
-            
-            print("\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n")
-
-
-            
             # if the subject is a singular common noun use its article
             # if the subject is a proper noun, ignore..
             
@@ -518,20 +487,17 @@ class Headline(object):
             
             if hSubjectQuantity == 1:
                 hSubjectQuantity = ""
-                
-            
+                          
             # If there is more than one subject, take the int quantity and
             # convert it to a string (i.e. 4 to four)
                 
             elif hSubjectQuantity > 1:
                 hSubjectQuantity = numberToString(str(hSubject.quantity))
-                
-                
+                         
             # Assemble the 1st sentence using the words
             #
             # Ex: Today seven police officers destroyed some naughty couches
             # on a cruise ship for a local charity.
-            
             
             firstSentence = ("Today {subjectArticle} {subjectQuantity} {subject} {actionPast}" +
                             " {objectQuantifier} {theObject} {placePreposition}" +
@@ -546,8 +512,8 @@ class Headline(object):
                                                        placePreposition = hPlace.prepositions,
                                                        placeArticle = hPlace.article,
                                                        place = hPlace.name,
-                                                       foundationCity = "horse", #hFoundationCity.name,
-                                                       foundationObject = "city", #hFoundationObject.singular.capitalize(),
+                                                       foundationCity = hFoundationCity.name,
+                                                       foundationObject = hFoundationObject.singular.capitalize(),
                                                        foundationSuffix = hFoundationSuffix
                                                        )
             
@@ -582,8 +548,7 @@ class Headline(object):
                                                          dollarsAdjective = hDollarsAdjective,
                                                          dollars = hDollars
                                                          )
-            
-            
+                       
             # Create the words necessary for the 3rd sentence
             
             hSubjectPronoun1st = Pronoun(hSubject,pov = "1st")
@@ -609,9 +574,7 @@ class Headline(object):
                 
             if hSubject.form == "plural":
                 hSubjectQuantifier = "one of the"
-            
-            
-            
+             
             # Assemble the 3rd sentence using the words
             
             thirdSentence = ("{beginQuote}{subjectPronoun1stHave} been coming to {placePronounDemonstrative} " +
@@ -639,26 +602,7 @@ class Headline(object):
                                                        endQuote = "\""
                                                        )
             
-            
-            # will continue to make a positive impact in the years ahead
-            
-            
-            
-            #print("\nDebug:\n")
-            #
-            #print("subject singular: " + hSubject.singular + "\n")
-            #print("subject plural: " + hSubject.plural + "\n")
-            #print("subject name: " + hSubject.name + "\n")
-            #print("object quantifier: " + hObjectQuantifier + "\n")
-            #print("object's adjective article: " + hObjectAdjective.article + "\n")
-            #
-            #
-            #print("\nHsubjectQuantity : " + hSubjectQuantity + "\n")
-            #
-            #if "  " in firstSentenceFormat:
-            #    print("This sentence has a double space\n")
-            
-            
+
             # Remove extra spaces
             
             if "   " in firstSentenceFormat:
@@ -790,24 +734,12 @@ def main():
 
 
 
-character = Noun(randomWord(CSV_RELATIVE_PATH+"/rhg_nAnimate.csv"),randomQuantity())
+character = Noun(randomWord([CSV_RELATIVE_PATH+"/rhg_nAnimate.csv"]),randomQuantity())
 characterPronoun = Pronoun(character,pov = "3rd")
 
-hPlace = Noun(randomWord(CSV_RELATIVE_PATH+"/rhg_nPlaces.csv"))
+hPlace = Noun(randomWord([CSV_RELATIVE_PATH+"/rhg_nPlaces.csv"]))
 hPlacePronounDemonstrative = Pronoun(hPlace,pov = "3rd")
 
-
-
-
-print("\nCharacter: " + character.name)
-print("\nCharacter Form: " + character.form)
-print("\nCharacter Gender: " + character.gender)
-print("\n")
-
-#print("\nCharacter Pronoun: " + characterPronoun.object)
-#print("\nCharacter Form: " + characterPronoun.subject)
-#print("\nCharacter Gender: " + character.have)
-#print("\n")
 
 
 print("Content-type: text/plain\n\n")
