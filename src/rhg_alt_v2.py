@@ -22,7 +22,7 @@ test = []
 pp = pprint.PrettyPrinter(indent=4)
 
  
-def randomWord(csvfile,filter = 0):
+def randomDict(csvfile,filter = 0):
     
     """returns a random word dict"""
     
@@ -156,19 +156,70 @@ def weightedDonationAmount():
 
 def randomName(gender = "m"):
     
-    firstNameList = csvToDict(CSV_RELATIVE_PATH + "/rhg_firstNames.csv",{"gender" : gender})
-    lastNameList = csvToDict(CSV_RELATIVE_PATH+"/rhg_lastNames.csv") 
+    firstNameList = csvToDict([CSV_RELATIVE_PATH + "/rhg_firstNames.csv"],{"gender" : gender})
+    lastNameList = csvToDict([CSV_RELATIVE_PATH+"/rhg_lastNames.csv"]) 
        
-    randomName = random.choice(firstNameList)
-    randomLastName = random.choice(lastNameList)
+    name = random.choice(firstNameList)["first"]
+    lastName = random.choice(lastNameList)["last"]
+          
+    return (name,lastName)
+
+def ageToStage(age):
     
-    for k,v in randomLastName.items():
-        randomName[k] = v
+    allStages = csvToDict([CSV_RELATIVE_PATH + "/rhg_nStages.csv"])
+    
+    matchedStages = []
+    
+    for stage in allStages:
+        if age >= int(stage["range_low"]) and age <= int(stage["range_high"]):
+            matchedStages.append(stage)
+    
+    return random.choice(matchedStages)
+    
+   
+class Human(object):
+    
+    """This is the human class"""
+    
+    def __init__(self):
         
-    # print("\n\n" + randomName["first"] + " " + randomName["last"] + "\n\n")
+        
+        gender = ["m","f"]
+        
+        self.gender = random.choice(gender)
+        
+        fullName = randomName(self.gender)
+    
+        self.firstName = fullName[0]
+        
+        self.lastName = fullName[1]
+        
+        self.age = random.randint(1,105)
+        
+        self.stage = ageToStage(self.age)
+        
+        self.iq = random.randint(0,160)
+        
+        self.job = randomDict([CSV_RELATIVE_PATH + "/rhg_nJobs.csv"])
+        
+        self.netWorth = random.randint(1,5000000)
         
         
-    return randomName
+        hello = ("Hello, my name is {firstName} {lastName} and I am {stageArticle} {stage}!" +
+                 " I'm {age} years old and working as {jobArticle} {job}!")
+            
+        helloFormat = hello.format(firstName = self.firstName,
+                                   lastName = self.lastName,
+                                   stageArticle = self.stage["article"],
+                                   stage = self.stage["singular"],
+                                   age = self.age,
+                                   jobArticle = self.job["article"],
+                                   job = self.job["singular"])
+                                                    
+        print(helloFormat)
+        
+
+
 
 class Word(object):
     
@@ -438,10 +489,10 @@ class Headline(object):
             
             # Create the words necessary for the headline
             
-            hSubject = NounAnimate(randomWord([CSV_RELATIVE_PATH+"/rhg_nAnimate.csv"]),randomQuantity())
-            hAction = Verb(randomWord([CSV_RELATIVE_PATH+"/rhg_verbs.csv"]))
+            hSubject = NounAnimate(randomDict([CSV_RELATIVE_PATH+"/rhg_nAnimate.csv"]),randomQuantity())
+            hAction = Verb(randomDict([CSV_RELATIVE_PATH+"/rhg_verbs.csv"]))
             hActionTense = ""
-            hObject = Noun(randomWord([CSV_RELATIVE_PATH+"/rhg_nInanimate.csv"]),randomQuantity())
+            hObject = Noun(randomDict([CSV_RELATIVE_PATH+"/rhg_nInanimate.csv"]),randomQuantity())
             
             # Assign the appropriate tense of the verb based on whether or not
             # the subject is singular/plural
@@ -466,11 +517,11 @@ class Headline(object):
             hSubjectArticle = hSubject.article
             hSubjectQuantity = hSubject.quantity
             hObjectQuantifier = hObject.quantifiers
-            hObjectAdjective = Adjective(randomWord([CSV_RELATIVE_PATH+"/rhg_adjectives.csv"]))
-            hPlace = Noun(randomWord([CSV_RELATIVE_PATH+"/rhg_nPlaces.csv"]))
-            hPlaceAdjective = Adjective(randomWord([CSV_RELATIVE_PATH+"/rhg_adjectives.csv"]))
-            hFoundationCity = Noun(randomWord([CSV_RELATIVE_PATH+"/rhg_nPlaces.csv"],{"uscapital" : "1"}))
-            hFoundationObject = Noun(randomWord([CSV_RELATIVE_PATH+"/rhg_nInanimate.csv"]),randomQuantity())
+            hObjectAdjective = Adjective(randomDict([CSV_RELATIVE_PATH+"/rhg_adjectives.csv"]))
+            hPlace = Noun(randomDict([CSV_RELATIVE_PATH+"/rhg_nPlaces.csv"]))
+            hPlaceAdjective = Adjective(randomDict([CSV_RELATIVE_PATH+"/rhg_adjectives.csv"]))
+            hFoundationCity = Noun(randomDict([CSV_RELATIVE_PATH+"/rhg_nPlaces.csv"],{"uscapital" : "1"}))
+            hFoundationObject = Noun(randomDict([CSV_RELATIVE_PATH+"/rhg_nInanimate.csv"]),randomQuantity())
             hFoundationSuffix = random.choice(["Foundation","Institute","Alliance","Hospital","Association","Conservancy",
                                                "Society","Trust","Committee","Fund"])
                                                
@@ -664,9 +715,9 @@ class Headline(object):
 #     def __init__(self):
 #         #obituary headline
 
-#         oSubject = Noun(randomWord(CSV_RELATIVE_PATH+"/rhg_nAnimate.csv"))
-#         oVerb = Verb(randomWord(CSV_RELATIVE_PATH+"/rhg_verbs.csv"))
-#         oObject = Noun(randomWord(CSV_RELATIVE_PATH+"/rhg_nInanimate.csv"))
+#         oSubject = Noun(randomDict(CSV_RELATIVE_PATH+"/rhg_nAnimate.csv"))
+#         oVerb = Verb(randomDict(CSV_RELATIVE_PATH+"/rhg_verbs.csv"))
+#         oObject = Noun(randomDict(CSV_RELATIVE_PATH+"/rhg_nInanimate.csv"))
 #         oObjectArticleQuantifier = ""
 #         oObjectState = ""
 
@@ -684,12 +735,12 @@ class Headline(object):
 
 #         #remembering the deceased
 
-#         oSubjectFriend = Noun(randomWord(CSV_RELATIVE_PATH+"/rhg_nAnimate.csv"))
-#         oPlace = Noun(randomWord(CSV_RELATIVE_PATH+"/rhg_nPlaces.csv"))
+#         oSubjectFriend = Noun(randomDict(CSV_RELATIVE_PATH+"/rhg_nAnimate.csv"))
+#         oPlace = Noun(randomDict(CSV_RELATIVE_PATH+"/rhg_nPlaces.csv"))
 #         oPronoun = Pronoun(nounToPronoun(oSubject.gender))
 #         oPlacePrep = random.choice(oPlace.prepositions)
 #         oPlaceArticle = ""
-#         oSubjectAdj = Adjective(randomWord(CSV_RELATIVE_PATH+"/rhg_adjectives.csv"))
+#         oSubjectAdj = Adjective(randomDict(CSV_RELATIVE_PATH+"/rhg_adjectives.csv"))
 
 #         if oPlace.article is None:
 #             oPlaceArticle = ""
@@ -699,7 +750,7 @@ class Headline(object):
 #         self.full_text = oSubjectFriend.singular + " said, \"Last time I saw " + oPronoun.object + ", " + oPronoun.subject + " was " + oPlacePrep + " " + oPlaceArticle + " " + oPlace.singular + ". " + oPronoun.subject + " was a " + oSubjectAdj.positive + " dude and I'll never forget " + oPronoun.object + ".\""
 
 def randomAnimateNoun(): 
-    newNoun =  Noun(randomWord(CSV_RELATIVE_PATH+"/rhg_nAnimate.csv"),randomQuantity())
+    newNoun =  Noun(randomDict(CSV_RELATIVE_PATH+"/rhg_nAnimate.csv"),randomQuantity())
     print(newNoun.name)
     print(newNoun.quantity)
     print(newNoun.form)
@@ -707,7 +758,7 @@ def randomAnimateNoun():
 
 
 def randomInanimateNoun(): 
-    newNoun =  Noun(randomWord(CSV_RELATIVE_PATH+"/rhg_nInanimate.csv"),randomQuantity())
+    newNoun =  Noun(randomDict(CSV_RELATIVE_PATH+"/rhg_nInanimate.csv"),randomQuantity())
     
     print("\n\n")
     
@@ -734,10 +785,10 @@ def main():
 
 
 
-character = Noun(randomWord([CSV_RELATIVE_PATH+"/rhg_nAnimate.csv"]),randomQuantity())
+character = Noun(randomDict([CSV_RELATIVE_PATH+"/rhg_nAnimate.csv"]),randomQuantity())
 characterPronoun = Pronoun(character,pov = "3rd")
 
-hPlace = Noun(randomWord([CSV_RELATIVE_PATH+"/rhg_nPlaces.csv"]))
+hPlace = Noun(randomDict([CSV_RELATIVE_PATH+"/rhg_nPlaces.csv"]))
 hPlacePronounDemonstrative = Pronoun(hPlace,pov = "3rd")
 
 
