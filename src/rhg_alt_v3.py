@@ -210,14 +210,18 @@ def createSubject():
     print("\n\\\\\\\\")
 
     subjectList = []
+    subjectDict = {}
     
     for i in range(subjectAmount):
         print(i)
         newHuman = Human()
-        subjectList.append(i)
+        subjectDict[newHuman.firstName] = newHuman
+        subjectList.append(newHuman)
         
     print(subjectList)
-
+    print(subjectDict)
+    
+    return subjectDict
 
 class Human(object):
     
@@ -233,17 +237,30 @@ class Human(object):
         else:
             self.gender = gender
         
+        print("\n\\\\\\\\\\\\\\\\\\")
+        print "%s" % (self.gender)
+        print("\\\\\\\\\\\\\\\\\\")
+        
         # if a name hasn't been provided, pick
         # a random name
         
         if fullName == None:
             
             fullName = randomName(self.gender)
+            self.fullName = fullName
             self.firstName = fullName[0]
             self.lastName = fullName[1]
         else:
+            self.fullName(fullName[0],fullName[1])
             self.firstName = fullName[0]
             self.lastName = fullName[1]
+        
+        print("\n\\\\\\\\\\\\\\\\\\")
+        print "%s %s" % (self.fullName[0],self.fullName[1])
+        print "%s" % (self.firstName)
+        print "%s" % (self.lastName)
+        print("\\\\\\\\\\\\\\\\\\")
+        
         
         # if an age hasn't been provided, pick
         # a random age.
@@ -252,11 +269,20 @@ class Human(object):
             self.age = random.randint(0,105)
         else:
             self.age = age
+        
+        print("\n\\\\\\\\\\\\\\\\\\")
+        print "%s" % (self.age)
+        print("\\\\\\\\\\\\\\\\\\")
+        
             
         # determine the stage in the human's life
         # based on age
         
         self.stage = ageToStage(self.age)
+        
+        print("\n\\\\\\\\\\\\\\\\\\")
+        print "%s" % (self.stage)
+        print("\\\\\\\\\\\\\\\\\\")
         
         # if a job hasn't been provided, pick
         # a random job.  A specific job can be provided
@@ -267,6 +293,10 @@ class Human(object):
             self.job = getJob()
         else:
             self.job = job
+        
+        print("\n\\\\\\\\\\\\\\\\\\")
+        print "%s" % (self.job)
+        print("\\\\\\\\\\\\\\\\\\")
            
     def hello(self):
         
