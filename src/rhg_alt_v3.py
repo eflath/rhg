@@ -170,6 +170,18 @@ def randomGender():
 
     return random.choice(gender)
 
+def getJob(job = None):
+    
+    allJobs = csvToDict([CSV_RELATIVE_PATH + "/rhg_nJobs.csv"])
+    
+    if job == None:
+        return random.choice(allJobs)
+
+    else:
+        for each in allJobs:
+            if each["singular"] == job:
+                return each
+
 def ageToStage(age):
     
     allStages = csvToDict([CSV_RELATIVE_PATH + "/rhg_nStages.csv"])
@@ -183,32 +195,79 @@ def ageToStage(age):
     return random.choice(matchedStages)
     
    
+def createSubject():
+    
+    subjectAmount = random.randint(1,10)
+    
+    print("\n\\\\\\\\")
+    print("subjectAmount:")
+    print(subjectAmount)
+    print("\n\\\\\\\\")
+    
+    print("\n\\\\\\\\")
+    print("range:")
+    print(range(subjectAmount))
+    print("\n\\\\\\\\")
+
+    subjectList = []
+    
+    for i in range(subjectAmount):
+        print(i)
+        newHuman = Human()
+        subjectList.append(i)
+        
+    print(subjectList)
+
+
 class Human(object):
     
     """This is the human class"""
     
-    def __init__(self,gender = None,job = None):
+    def __init__(self,gender = None,fullName = None,age = None,job = None):
+        
+        # if a gender hasn't been provided, pick
+        # a random gender
         
         if gender == None:
             self.gender = randomGender()
+        else:
+            self.gender = gender
         
-        fullName = randomName(self.gender)
-    
-        self.firstName = fullName[0]
+        # if a name hasn't been provided, pick
+        # a random name
         
-        self.lastName = fullName[1]
+        if fullName == None:
+            
+            fullName = randomName(self.gender)
+            self.firstName = fullName[0]
+            self.lastName = fullName[1]
+        else:
+            self.firstName = fullName[0]
+            self.lastName = fullName[1]
         
-        self.age = random.randint(1,105)
+        # if an age hasn't been provided, pick
+        # a random age.
+        
+        if age == None:
+            self.age = random.randint(0,105)
+        else:
+            self.age = age
+            
+        # determine the stage in the human's life
+        # based on age
         
         self.stage = ageToStage(self.age)
         
-        self.iq = random.randint(0,160)
-        
+        # if a job hasn't been provided, pick
+        # a random job.  A specific job can be provided
+        # by using the getJob() function and passing
+        # the job name as an argument, i.e., getJob("baker")
+    
         if job == None:
-            self.job = randomDict([CSV_RELATIVE_PATH + "/rhg_nJobs.csv"])
-        
-        self.netWorth = random.randint(1,5000000)
-        
+            self.job = getJob()
+        else:
+            self.job = job
+           
     def hello(self):
         
         hello = ("Hello, my name is {firstName} {lastName} and I am {stageArticle} {stage}!" +
