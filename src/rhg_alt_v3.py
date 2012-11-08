@@ -195,9 +195,13 @@ def ageToStage(age):
     return random.choice(matchedStages)
     
    
-def createSubject():
+def createHumanSubject(amount,**kwargs):
     
-    subjectAmount = random.randint(1,10)
+    if amount == None:
+        subjectAmount = random.randint(1,10)
+        
+    else:
+        subjectAmount = amount
     
     print("\n\\\\\\\\")
     print("subjectAmount:")
@@ -209,19 +213,28 @@ def createSubject():
     print(range(subjectAmount))
     print("\n\\\\\\\\")
 
-    subjectList = []
-    subjectDict = {}
+    humanSubjectList = []
+    
+    print(kwargs)
     
     for i in range(subjectAmount):
-        print(i)
-        newHuman = Human()
-        subjectDict[newHuman.firstName] = newHuman
-        subjectList.append(newHuman)
         
-    print(subjectList)
-    print(subjectDict)
+        print(i)
+        
+        if kwargs == {}:
+            newHumanSubject = Human()
+            humanSubjectList.append(newHumanSubject)
+            print(humanSubjectList)
+        else:
+            newHumanSubject = Human(**kwargs)
+            humanSubjectList.append(newHumanSubject)
+            print(humanSubjectList)
+         
+        
+        
     
-    return subjectDict
+    
+    return humanSubjectList
 
 class Human(object):
     
@@ -297,6 +310,13 @@ class Human(object):
         print("\n\\\\\\\\\\\\\\\\\\")
         print "%s" % (self.job)
         print("\\\\\\\\\\\\\\\\\\")
+    
+    def __repr__(self):
+        return ("<Human instance: %s %s>") % (self.fullName)
+    
+    def __str__(self):
+        return ("%s %s") % (self.fullName)
+    
            
     def hello(self):
         
