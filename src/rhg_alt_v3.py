@@ -230,11 +230,36 @@ def createHumanSubject(amount,**kwargs):
             humanSubjectList.append(newHumanSubject)
             print(humanSubjectList)
          
-        
-        
-    
-    
     return humanSubjectList
+
+
+class HumanGroup(object):
+    
+    """This is the human group class"""
+    
+    def __init__(self,amount,**kwargs):
+        
+        if amount == None:
+            subjectAmount = random.randint(1,10)
+        
+        else:
+            subjectAmount = amount
+            
+        
+        for i in range(subjectAmount):
+            if kwargs == {}:
+                newHumanSubject = Human()
+                humanSubjectList.append(newHumanSubject)
+                print(humanSubjectList)
+            else:
+                newHumanSubject = Human(**kwargs)
+                humanSubjectList.append(newHumanSubject)
+                print(humanSubjectList)    
+    
+   
+        
+        
+
 
 class Human(object):
     
