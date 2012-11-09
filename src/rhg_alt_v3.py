@@ -170,6 +170,16 @@ def randomGender():
 
     return random.choice(gender)
 
+def randomAge():
+    
+    ageGroups = ([0,12],[13,19],[20,29],[30,59],[60,105])
+
+    randomAgeGroup = random.choice(ageGroups)
+    
+    age = random.randint(randomAgeGroup[0],randomAgeGroup[1])
+
+    return age
+
 def getJob(job = None):
     
     allJobs = csvToDict([CSV_RELATIVE_PATH + "/rhg_nJobs.csv"])
@@ -256,7 +266,7 @@ class HumanGroup(object):
                 newHuman = Human(**kwargs)
                 self.humanList.append(newHuman)
                 #print(humanList)    
-    
+                  
     @property
     def jobs(self):
         
@@ -270,10 +280,8 @@ class HumanGroup(object):
         
         for job in jobList:
             if job not in jobDict:
-                print(job)
                 jobDict[job] = 1
             else:
-                print(job)
                 jobDict[job] += 1
         
         print(jobDict)
@@ -286,12 +294,21 @@ class HumanGroup(object):
         #
         #
         #return jobList
+      
+    @property
+    
+    def info(self):
         
-        
-        
-        
-        
-        
+        for each in self.humanList:
+            print("\n")
+            print("\\\\\\\\\\\\\\")
+            print(each.fullName[0] + " " + each.fullName[1])
+            print(each.gender)
+            print(each.age)
+            print(each.stage["singular"])
+            print(each.job["singular"])
+            print("\\\\\\\\\\\\\\")
+
 
 
 class Human(object):
@@ -308,52 +325,31 @@ class Human(object):
         else:
             self.gender = gender
         
-        print("\n\\\\\\\\\\\\\\\\\\")
-        print "%s" % (self.gender)
-        print("\\\\\\\\\\\\\\\\\\")
-        
         # if a name hasn't been provided, pick
         # a random name
         
         if fullName == None:
-            
             fullName = randomName(self.gender)
-            self.fullName = fullName
-            self.firstName = fullName[0]
-            self.lastName = fullName[1]
+            self._fullName = fullName
+            self._firstName = fullName[0]
+            self._lastName = fullName[1]
         else:
-            self.fullName(fullName[0],fullName[1])
-            self.firstName = fullName[0]
-            self.lastName = fullName[1]
-        
-        print("\n\\\\\\\\\\\\\\\\\\")
-        print "%s %s" % (self.fullName[0],self.fullName[1])
-        print "%s" % (self.firstName)
-        print "%s" % (self.lastName)
-        print("\\\\\\\\\\\\\\\\\\")
-        
+            self._fullName(fullName[0],fullName[1])
+            self._firstName = fullName[0]
+            self._lastName = fullName[1]
         
         # if an age hasn't been provided, pick
         # a random age.
         
         if age == None:
-            self.age = random.randint(0,105)
+            self._age = randomAge()
         else:
-            self.age = age
-        
-        print("\n\\\\\\\\\\\\\\\\\\")
-        print "%s" % (self.age)
-        print("\\\\\\\\\\\\\\\\\\")
-        
+            self._age = age
             
         # determine the stage in the human's life
         # based on age
         
-        self.stage = ageToStage(self.age)
-        
-        print("\n\\\\\\\\\\\\\\\\\\")
-        print "%s" % (self.stage)
-        print("\\\\\\\\\\\\\\\\\\")
+        self._stage = ageToStage(self._age)
         
         # if a job hasn't been provided, pick
         # a random job.  A specific job can be provided
@@ -361,13 +357,34 @@ class Human(object):
         # the job name as an argument, i.e., getJob("baker")
     
         if job == None:
-            self.job = getJob()
+            self._job = getJob()
         else:
-            self.job = job
-        
-        print("\n\\\\\\\\\\\\\\\\\\")
-        print "%s" % (self.job)
-        print("\\\\\\\\\\\\\\\\\\")
+            self._job = job
+    
+    @property
+    def fullName(self):
+        return self._fullName[0] + " " + self._fullName[1]
+    
+    @property
+    def firstName(self):
+        return self._fullName[0]
+    
+    @property
+    def lastName(self):
+        return self._fullName[1]
+    
+    @property
+    def age(self):
+        return str(self._age)
+    
+    @property
+    def stage(self):
+        return self._stage["singular"]
+    
+    @property
+    def job(self):
+        return self._job["singular"]
+       
     
     def __repr__(self):
         return ("<Human instance: %s %s>") % (self.fullName)
