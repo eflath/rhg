@@ -237,26 +237,59 @@ class HumanGroup(object):
     
     """This is the human group class"""
     
-    def __init__(self,amount,**kwargs):
+    def __init__(self,count,**kwargs):
         
-        if amount == None:
-            subjectAmount = random.randint(1,10)
+        if count == None:
+            self.humanCount = random.randint(1,10)
         
         else:
-            subjectAmount = amount
+            self.humanCount = count
             
+        self.humanList = []
         
-        for i in range(subjectAmount):
+        for i in range(self.humanCount):
             if kwargs == {}:
-                newHumanSubject = Human()
-                humanSubjectList.append(newHumanSubject)
-                print(humanSubjectList)
+                newHuman = Human()
+                self.humanList.append(newHuman)
+                #print(humanList)
             else:
-                newHumanSubject = Human(**kwargs)
-                humanSubjectList.append(newHumanSubject)
-                print(humanSubjectList)    
+                newHuman = Human(**kwargs)
+                self.humanList.append(newHuman)
+                #print(humanList)    
     
-   
+    @property
+    def jobs(self):
+        
+        jobList = []
+        
+        for each in self.humanList:
+            jobList.append(each.job["singular"])
+        
+        
+        jobDict = {}
+        
+        for job in jobList:
+            if job not in jobDict:
+                print(job)
+                jobDict[job] = 1
+            else:
+                print(job)
+                jobDict[job] += 1
+        
+        print(jobDict)
+        
+        
+        
+        #
+        #for each in jobList:
+        #    print(jobList.count(each))
+        #
+        #
+        #return jobList
+        
+        
+        
+        
         
         
 
