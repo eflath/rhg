@@ -127,11 +127,12 @@ def getQuantifiers(countable):
     
 def numberToString(number):
     
+    """Converts an integer into the word version"""
+    
     numberToStringList = csvToDict([CSV_RELATIVE_PATH+"/rhg_numbers.csv"])
     
-
     for each in numberToStringList:
-        if each["number"] == number:
+        if int(each["number"]) == number:
             return each["string"]
         
 
@@ -249,11 +250,17 @@ class HumanGroup(object):
     
     def __init__(self,count,**kwargs):
         
+        # if the amount of humans isn't provided, create a random amount
+        
         if count == None:
             self.humanCount = random.randint(1,10)
         
         else:
             self.humanCount = count
+        
+        # create a certain number humans according to the humanCount and add them
+        # to the humanList.  If there are arguments, use them, if not make a default
+        # random human
             
         self.humanList = []
         
@@ -270,30 +277,53 @@ class HumanGroup(object):
     @property
     def jobs(self):
         
-        jobList = []
+        # create a list of all of the human's jobs.  The human.job method
+        # returns the human's job in singular form
         
-        for each in self.humanList:
-            jobList.append(each.job["singular"])
+        groupJobList = []
         
+        for human in self.humanList:
+            groupJobList.append(human.job)
         
-        jobDict = {}
+        # create a dictionary that counts the amount of occurences of each job.
+        # If a job occurs more than once, add one to its count
+            
+        groupJobCount = {}
         
-        for job in jobList:
-            if job not in jobDict:
-                jobDict[job] = 1
+        for job in groupJobList:
+    
+            if job not in groupJobCount:
+               groupJobCount[job] = 1
             else:
-                jobDict[job] += 1
+                groupJobCount[job] += 1
+    
+        # convert the count from integer to word form to that it looks nicer in a
+        # sentence.  If a job's count is more than 1, change the form from singular to
+        # plural and delete the old entry ( This is is necessary because it seems as if 
+        # you can't rename keys )
         
-        print(jobDict)
+        for k,v in groupJobCount.items():
+            
+            numberWord = numberToString(v)
+            
+            if v > 1:
+                del groupJobCount[k]
+                plural = getJob(k)["plural"]
+                groupJobCount[plural] = numberWord
+                
+            else:
+                groupJobCount[k] = numberWord
+            
+        # reformat thhe groupJobCount dict so that it's more presentable
+        # from {bakers : two} to "two bakers" 
         
+        readableJobCount = []
         
-        
-        #
-        #for each in jobList:
-        #    print(jobList.count(each))
-        #
-        #
-        #return jobList
+        for k,v in groupJobCount.items():
+            readableJobCount.append(str(v) + " " + k)
+
+        print readableJobCount
+
       
     @property
     
@@ -302,11 +332,11 @@ class HumanGroup(object):
         for each in self.humanList:
             print("\n")
             print("\\\\\\\\\\\\\\")
-            print(each.fullName[0] + " " + each.fullName[1])
+            print(each.fullName)
             print(each.gender)
             print(each.age)
-            print(each.stage["singular"])
-            print(each.job["singular"])
+            print(each.stage)
+            print(each.job)
             print("\\\\\\\\\\\\\\")
 
 
@@ -359,7 +389,7 @@ class Human(object):
         if job == None:
             self._job = getJob()
         else:
-            self._job = job
+            self._job = getJob(job)
     
     @property
     def fullName(self):
@@ -385,6 +415,10 @@ class Human(object):
     def job(self):
         return self._job["singular"]
        
+    @property
+    def jobDict(self):
+        return self._job
+    
     
     def __repr__(self):
         return ("<Human instance: %s %s>") % (self.fullName)
@@ -409,7 +443,7 @@ class Human(object):
         print(helloFormat)
         
 
-
+newHumanGroup = HumanGroup(4)
 
 class Word(object):
     
