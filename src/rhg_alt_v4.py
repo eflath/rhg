@@ -207,7 +207,7 @@ def getTrait(csv,trait = None):
     else:
         for each in allTraits:
             if each["singular"] == trait:
-                return trait
+                return each
 
 
 
@@ -224,7 +224,7 @@ def ageToStage(age):
     return random.choice(matchedStages)
  
 
-def humanTraitCount(humanList,trait):
+def humanTraitCount(humanList,csv,trait):
    
         # create a list of all of the human's traits.  The trait's method
         # should return the trait in singular form
@@ -250,32 +250,31 @@ def humanTraitCount(humanList,trait):
     
         print(traitCount)
     
-        # convert the count from integer to word form to that it looks nicer in a
-        # sentence.  If a job's count is more than 1, change the form from singular to
-        # plural and delete the old entry ( This is is necessary because it seems as if 
-        # you can't rename keys )
+        #convert the count from integer to word form to that it looks nicer in a
+        #sentence.  If a job's count is more than 1, change the form from singular to
+        #plural and delete the old entry ( This is is necessary because it seems as if 
+        #you can't rename keys )
+         
+        for k,v in traitCount.items():
+            
+            numberWord = numberToString(v)
+            
+            if v > 1:
+                del traitCount[k]
+                plural = getTrait(csv,k)["plural"]
+                traitCount[plural] = numberWord
+            else:
+                traitCount[k] = numberWord
+            
+        # reformat thhe groupJobCount dict so that it's more presentable
+        # from {bakers : two} to "two bakers" 
         
-        #for k,v in traitCount.items():
-        #    
-        #    numberWord = numberToString(v)
-        #    
-        #    if v > 1:
-        #        del traitCount[k]
-        #        plural = getTrait(k)["plural"]
-        #        traitCount[plural] = numberWord
-        #        
-        #    else:
-        #        traitCount[k] = numberWord
-        #    
-        ## reformat thhe groupJobCount dict so that it's more presentable
-        ## from {bakers : two} to "two bakers" 
-        #
-        #readableTraitCount = []
-        #
-        #for k,v in traitCount.items():
-        #    readableTraitCount.append(str(v) + " " + k)
-        #
-        #print readableTraitCount
+        readableTraitCount = []
+        
+        for k,v in traitCount.items():
+            readableTraitCount.append(str(v) + " " + k)
+        
+        print readableTraitCount
  
  
 
@@ -319,57 +318,12 @@ class HumanGroup(object):
     @property
     def jobs(self):
         
-        # create a list of all of the human's jobs.  The human.job method
-        # returns the human's job in singular form
-        
-        groupJobList = []
-        
-        for human in self.humanList:
-            groupJobList.append(human.job)
-        
-        # create a dictionary that counts the amount of occurences of each job.
-        # If a job occurs more than once, add one to its count
-            
-        groupJobCount = {}
-        
-        for job in groupJobList:
-    
-            if job not in groupJobCount:
-               groupJobCount[job] = 1
-            else:
-                groupJobCount[job] += 1
-    
-        # convert the count from integer to word form to that it looks nicer in a
-        # sentence.  If a job's count is more than 1, change the form from singular to
-        # plural and delete the old entry ( This is is necessary because it seems as if 
-        # you can't rename keys )
-        
-        for k,v in groupJobCount.items():
-            
-            numberWord = numberToString(v)
-            
-            if v > 1:
-                del groupJobCount[k]
-                plural = getJob(k)["plural"]
-                groupJobCount[plural] = numberWord
-                
-            else:
-                groupJobCount[k] = numberWord
-            
-        # reformat thhe groupJobCount dict so that it's more presentable
-        # from {bakers : two} to "two bakers" 
-        
-        readableJobCount = []
-        
-        for k,v in groupJobCount.items():
-            readableJobCount.append(str(v) + " " + k)
-
-        print readableJobCount
+        humanTraitCount(self.humanList,"nJobs","job")
 
     @property
     def stages(self):
      
-        humanTraitCount(self.humanList,"stage")
+        humanTraitCount(self.humanList,"nStages","stage")
                     
         
       
