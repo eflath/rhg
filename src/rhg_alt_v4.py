@@ -274,7 +274,7 @@ def humanTraitCount(humanList,csv,trait):
         for k,v in traitCount.items():
             readableTraitCount.append(str(v) + " " + k)
         
-        print readableTraitCount
+        return readableTraitCount
  
  
 
@@ -318,12 +318,12 @@ class HumanGroup(object):
     @property
     def jobs(self):
         
-        humanTraitCount(self.humanList,"nJobs","job")
+        return humanTraitCount(self.humanList,"nJobs","job")
 
     @property
     def stages(self):
      
-        humanTraitCount(self.humanList,"nStages","stage")
+        return humanTraitCount(self.humanList,"nStages","stage")
                     
         
       
@@ -702,6 +702,53 @@ class Pronoun(Word):
     def demonstrativeFar(self):
         return self.definition["demonstrative far"]
     
+
+
+
+class newHeadline(object):
+    
+    def __init__(self):
+        
+        # Create the words necessary for the headline
+            
+            hSubject = random.choice([Human(),HumanGroup(4,job = "baker")])
+            
+            hSubjectRep = ""
+            
+            if isinstance(hSubject, Human):
+                hSubjectRep = hSubject.fullName
+                
+            if isinstance(hSubject, HumanGroup):    
+                hSubjectRep = hSubject.jobs[0]
+                
+            
+            hAction = Verb(randomDict([CSV_RELATIVE_PATH+"/rhg_verbs.csv"]))
+            hActionTense = ""
+            hObject = Noun(randomDict([CSV_RELATIVE_PATH+"/rhg_nInanimate.csv"]),randomQuantity())
+        
+        # Assign the appropriate tense of the verb based on whether or not
+            # the subject is singular/plural
+            
+            if isinstance(hSubject,Human):
+                print("true")
+                hActionTense = hAction.present
+                
+            if isinstance(hSubject,HumanGroup):
+                hActionTense = hAction.infinitive
+
+            # Assemble the headline using the words
+            
+            mainHeadline = "{subject} {action} {theObject} For Charity"
+            
+            mainHeadlineFormat = mainHeadline.format(subject = hSubjectRep,
+                                                     action = hActionTense,
+                                                     theObject = hObject.name,
+                                                    )
+
+            print(mainHeadlineFormat)
+
+
+
 
 
 class Headline(object):
