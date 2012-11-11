@@ -181,12 +181,23 @@ def randomAge():
 
     return age
 
-def getJob(job = None):
+def getJobDict(job = None):
+    
+    """ returns a job's dictionary.  If a specific job, in singular form,
+    isn't supplied, a random one is returned.
+    """
+    
+    # store all job dictionaries
     
     allJobs = csvToDict([CSV_RELATIVE_PATH + "/rhg_nJobs.csv"])
     
+    # if a job isn't specified, return a random one
+    
     if job == None:
         return random.choice(allJobs)
+
+    # see if the supplied job exists in the maaster job list, and return
+    # its dict
 
     else:
         for each in allJobs:
@@ -196,8 +207,6 @@ def getJob(job = None):
 def getTrait(csv,trait = None):
     
     traitPath = "[CSV_RELATIVE_PATH + \"/rhg_" + csv + ".csv\"]"
-    
-    print(traitPath)
     
     allTraits = csvToDict(eval(traitPath))
     
@@ -248,8 +257,6 @@ def humanTraitCount(humanList,csv,trait):
             else:
                 traitCount[trait] += 1
     
-        print(traitCount)
-    
         #convert the count from integer to word form to that it looks nicer in a
         #sentence.  If a job's count is more than 1, change the form from singular to
         #plural and delete the old entry ( This is is necessary because it seems as if 
@@ -282,12 +289,12 @@ class HumanGroup(object):
     
     """This is the human group class"""
     
-    def __init__(self,count,**kwargs):
+    def __init__(self,count = None,**kwargs):
         
         # if the amount of humans isn't provided, create a random amount
         
         if count == None:
-            self.humanCount = random.randint(1,10)
+            self.humanCount = random.randint(2,8)
         
         else:
             self.humanCount = count
@@ -312,9 +319,7 @@ class HumanGroup(object):
     def list(self):
         for each in self.humanList:
             print each.fullName
-    
-    
-                  
+               
     @property
     def jobs(self):
         
@@ -340,8 +345,76 @@ class HumanGroup(object):
             print(each.job)
             print("\\\\\\\\\\\\\\")
 
+class HumanGroupColleagues(HumanGroup):
+    
+    def __init__(self,count = None,job = None,**kwargs):
+        
+        # if the amount of humans isn't provided, create a random amount
+        
+        if count == None:
+            self.humanCount = random.randint(2,8)
+        
+        else:
+            self.humanCount = count
+        
+        # create a certain number humans according to the humanCount and add them
+        # to the humanList.  If there are arguments, use them, if not make a default
+        # random human
+            
+        self.humanList = []
+        
+        randomJob = getJobDict()["singular"]
+        
+        # if a job isn't specified, pick a random one
+        
+        for i in range(self.humanCount):
+           if job == None:
+               newHuman = Human(job = randomJob,**kwargs)
+               self.humanList.append(newHuman)
+           else:
+               newHuman = Human(job = job,**kwargs)
+               self.humanList.append(newHuman)
+               
+    @property
+    def sharedTrait(self):
+        return self.jobs[0]           
 
-
+              
+class HumanGroupContemporaries(HumanGroup):
+    
+    def __init__(self,count = None,age = None,**kwargs):
+        
+        # if the amount of humans isn't provided, create a random amount
+        
+        if count == None:
+            self.humanCount = random.randint(2,8)
+        
+        else:
+            self.humanCount = count
+        
+        # create a certain number humans according to the humanCount and add them
+        # to the humanList.  If there are arguments, use them, if not make a default
+        # random human
+            
+        self.humanList = []
+        
+        sharedAge = randomAge()
+        
+        # if an age isn't specified, pick a random one
+        
+        for i in range(self.humanCount):
+           if age == None:
+               newHuman = Human(age = sharedAge,**kwargs)
+               self.humanList.append(newHuman)
+           else:
+               newHuman = Human(age = age,**kwargs)
+               self.humanList.append(newHuman)
+    
+    @property
+    def sharedTrait(self):
+        return self.stages[0]
+    
+    
 class Human(object):
     
     """This is the human class"""
@@ -384,13 +457,13 @@ class Human(object):
         
         # if a job hasn't been provided, pick
         # a random job.  A specific job can be provided
-        # by using the getJob() function and passing
-        # the job name as an argument, i.e., getJob("baker")
+        # by using the getJobDict() function and passing
+        # the job name as an argument, i.e., getJobDict("baker")
     
         if job == None:
-            self._job = getJob()
+            self._job = getJobDict()
         else:
-            self._job = getJob(job)
+            self._job = getJobDict(job)
     
     @property
     def fullName(self):
@@ -443,8 +516,6 @@ class Human(object):
                                                     
         print(helloFormat)
         
-
-newHumanGroup = HumanGroup(4)
 
 class Word(object):
     
@@ -705,37 +776,34 @@ class Pronoun(Word):
 
 
 
-class newHeadline(object):
+class NewHeadline(object):
     
     def __init__(self):
         
         # Create the words necessary for the headline
             
-            hSubject = random.choice([Human(),HumanGroup(4,job = "baker")])
+            
+            
+            hSubject = random.choice([Human(),
+                                      HumanGroupColleagues(),
+                                      HumanGroupContemporaries()])
             
             hSubjectRep = ""
-            
-            if isinstance(hSubject, Human):
-                hSubjectRep = hSubject.fullName
-                
-            if isinstance(hSubject, HumanGroup):    
-                hSubjectRep = hSubject.jobs[0]
-                
-            
             hAction = Verb(randomDict([CSV_RELATIVE_PATH+"/rhg_verbs.csv"]))
             hActionTense = ""
             hObject = Noun(randomDict([CSV_RELATIVE_PATH+"/rhg_nInanimate.csv"]),randomQuantity())
-        
-        # Assign the appropriate tense of the verb based on whether or not
-            # the subject is singular/plural
             
-            if isinstance(hSubject,Human):
-                print("true")
+            
+            # Assign the appropriate words baesd on if the subject is singular/plural
+            
+            if isinstance(hSubject, Human):
+                hSubjectRep = hSubject.fullName
                 hActionTense = hAction.present
                 
-            if isinstance(hSubject,HumanGroup):
+            if isinstance(hSubject, HumanGroup):    
+                hSubjectRep = hSubject.sharedTrait
                 hActionTense = hAction.infinitive
-
+            
             # Assemble the headline using the words
             
             mainHeadline = "{subject} {action} {theObject} For Charity"
@@ -745,7 +813,7 @@ class newHeadline(object):
                                                      theObject = hObject.name,
                                                     )
 
-            print(mainHeadlineFormat)
+            print(string.capwords(mainHeadlineFormat))
 
 
 
