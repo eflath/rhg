@@ -432,35 +432,104 @@ class HumanGroupContemporaries(HumanGroup):
     @property
     def sharedTrait(self):
         return self.stages[0]
+
+class HumanGroupFamily(HumanGroup):
+    
+    def __init__(self,count = None,lastName = None,**kwargs):
+        
+        # if the amount of humans isn't provided, create a random amount
+        
+        if count == None:
+            self._count = random.randint(2,8)
+        
+        else:
+            self._count = count
+        
+        # create a certain number humans according to the _count and add them
+        # to the humanList.  If there are arguments, use them, if not make a default
+        # random human
+            
+        self.humanList = []
+        
+        sharedLastName = randomName(form = "last")
+        
+        # if a last name isn't specified, pick a random one
+        
+        for i in range(self._count):
+           if lastName == None:
+               newHuman = Human(lastName = sharedLastName,**kwargs)
+               self.humanList.append(newHuman)
+           else:
+               newHuman = Human(lastName = sharedLastname,**kwargs)
+               self.humanList.append(newHuman)
+    
+    @property
+    def sharedTrait(self):
+        return self.stages[0]
+
     
     
 class Human(object):
     
     """This is the human class"""
     
-    def __init__(self,gender = None,fullName = None,age = None,job = None):
+    def __init__(self,gender = None,fullName = None,firstName = None, lastName = None,
+                 age = None,job = None):
         
         # if a gender hasn't been provided, pick
         # a random gender
         
         if gender == None:
-            self.gender = randomGender()
+            self._gender = randomGender()
         else:
-            self.gender = gender
+            self._gender = gender
         
-        # if a name hasn't been provided, pick
-        # a random name
+        # if a full name has not been provided
         
         if fullName == None:
-            fullName = randomName(gender = self.gender)
+
+            # but a first and last name have been, assigned them..
+            
+            if firstName and lastName:
+                self._fullName = (firstName,lastName)
+                self._firstName = firstName
+                self._lastName = lastName
+                
+            
+            # but a first name has been, assign it and generate a random last name
+            
+            elif firstName and lastName == None:
+                lastName = randomName(form = "last")
+                self._fullName = (firstName,lastName)
+                self._firstName = firstName
+                self._lastName = lastName
+                
+            
+            # but a last name has been, assign it and generate a random first name
+            
+            elif lastName and firstName == None:
+                firstName = randomName(form = "first", gender = self._gender)
+                self._fullName = (firstName,lastName)
+                self._firstName = firstName
+                self._lastName = lastName
+                
+            
+            # no name whatsoever has been provided, generate a random one
+            
+            else:
+                fullName = randomName()
+                self._fullName = (fullName[0],fullName[1])
+                self._firstName = fullName[0]
+                self._lastName = fullName[1]
+                
+            
+        # a full name has been provided, assign it    
+            
+        else:
             self._fullName = fullName
             self._firstName = fullName[0]
             self._lastName = fullName[1]
-        else:
-            self._fullName(fullName[0],fullName[1])
-            self._firstName = fullName[0]
-            self._lastName = fullName[1]
-        
+           
         # if an age hasn't been provided, pick
         # a random age.
         
@@ -483,6 +552,10 @@ class Human(object):
             self._job = getJobDict()
         else:
             self._job = getJobDict(job)
+    
+    @property
+    def gender(self):
+        return self._gender
     
     @property
     def fullName(self):
