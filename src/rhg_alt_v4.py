@@ -155,16 +155,30 @@ def weightedDonationAmount():
     return random.randint(randomRange[0],randomRange[1])
 
 
-def randomName(gender = "m"):
+def randomName(form = None,gender = "m"):
     
     firstNameList = csvToDict([CSV_RELATIVE_PATH + "/rhg_firstNames.csv"],{"gender" : gender})
     lastNameList = csvToDict([CSV_RELATIVE_PATH+"/rhg_lastNames.csv"]) 
-       
-    name = random.choice(firstNameList)["first"]
-    lastName = random.choice(lastNameList)["last"]
-          
-    return (name,lastName)
-
+    
+    # if no form is specified, return a random full name in a tuple
+    
+    if form == None:
+        name = random.choice(firstNameList)["first"]
+        lastName = random.choice(lastNameList)["last"]
+        return (name,lastName)
+    
+    # if the "first" form is specfied, return a first name, based on the gender, as a string
+        
+    if form == "first":
+        firstName = random.choice(firstNameList)["first"]
+        return firstName
+    
+    # if the "last" form is specfied, return a last name as a string
+    
+    if form == "last":
+        lastName = random.choice(lastNameList)["last"]
+        return lastName
+    
 def randomGender():
     
     gender = ["m","f"]
@@ -294,18 +308,18 @@ class HumanGroup(object):
         # if the amount of humans isn't provided, create a random amount
         
         if count == None:
-            self.humanCount = random.randint(2,8)
+            self._count = random.randint(2,8)
         
         else:
-            self.humanCount = count
+            self._count = count
         
-        # create a certain number humans according to the humanCount and add them
+        # create a certain number humans according to the _count and add them
         # to the humanList.  If there are arguments, use them, if not make a default
         # random human
             
         self.humanList = []
         
-        for i in range(self.humanCount):
+        for i in range(self._count):
             if kwargs == {}:
                 newHuman = Human()
                 self.humanList.append(newHuman)
@@ -314,6 +328,11 @@ class HumanGroup(object):
                 newHuman = Human(**kwargs)
                 self.humanList.append(newHuman)
                 #print(humanList)    
+    
+    @property
+    def count(self):
+        return self._count
+    
     
     @property
     def list(self):
@@ -352,12 +371,12 @@ class HumanGroupColleagues(HumanGroup):
         # if the amount of humans isn't provided, create a random amount
         
         if count == None:
-            self.humanCount = random.randint(2,8)
+            self._count = random.randint(2,8)
         
         else:
-            self.humanCount = count
+            self._count = count
         
-        # create a certain number humans according to the humanCount and add them
+        # create a certain number humans according to the _count and add them
         # to the humanList.  If there are arguments, use them, if not make a default
         # random human
             
@@ -367,7 +386,7 @@ class HumanGroupColleagues(HumanGroup):
         
         # if a job isn't specified, pick a random one
         
-        for i in range(self.humanCount):
+        for i in range(self._count):
            if job == None:
                newHuman = Human(job = randomJob,**kwargs)
                self.humanList.append(newHuman)
@@ -387,12 +406,12 @@ class HumanGroupContemporaries(HumanGroup):
         # if the amount of humans isn't provided, create a random amount
         
         if count == None:
-            self.humanCount = random.randint(2,8)
+            self._count = random.randint(2,8)
         
         else:
-            self.humanCount = count
+            self._count = count
         
-        # create a certain number humans according to the humanCount and add them
+        # create a certain number humans according to the _count and add them
         # to the humanList.  If there are arguments, use them, if not make a default
         # random human
             
@@ -402,7 +421,7 @@ class HumanGroupContemporaries(HumanGroup):
         
         # if an age isn't specified, pick a random one
         
-        for i in range(self.humanCount):
+        for i in range(self._count):
            if age == None:
                newHuman = Human(age = sharedAge,**kwargs)
                self.humanList.append(newHuman)
@@ -433,7 +452,7 @@ class Human(object):
         # a random name
         
         if fullName == None:
-            fullName = randomName(self.gender)
+            fullName = randomName(gender = self.gender)
             self._fullName = fullName
             self._firstName = fullName[0]
             self._lastName = fullName[1]
