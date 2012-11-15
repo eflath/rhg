@@ -297,184 +297,12 @@ def humanTraitCount(humanList,csv,trait):
         
         return readableTraitCount
  
- 
-
-class HumanGroup(object):
-    
-    """This is the human group class"""
-    
-    def __init__(self,count = None,**kwargs):
-        
-        # if the amount of humans isn't provided, create a random amount
-        
-        if count == None:
-            self._count = random.randint(2,8)
-        
-        else:
-            self._count = count
-        
-        # create a certain number humans according to the _count and add them
-        # to the humanList.  If there are arguments, use them, if not make a default
-        # random human
-            
-        self.humanList = []
-        
-        for i in range(self._count):
-            if kwargs == {}:
-                newHuman = Human()
-                self.humanList.append(newHuman)
-                #print(humanList)
-            else:
-                newHuman = Human(**kwargs)
-                self.humanList.append(newHuman)
-                #print(humanList)    
-    
-    @property
-    def count(self):
-        return self._count
-    
-    
-    @property
-    def list(self):
-        for each in self.humanList:
-            print each.fullName
-               
-    @property
-    def jobs(self):
-        
-        return humanTraitCount(self.humanList,"nJobs","job")
-
-    @property
-    def stages(self):
-     
-        return humanTraitCount(self.humanList,"nStages","stage")
-                    
-        
-      
-    @property
-    def info(self):
-        
-        for each in self.humanList:
-            print("\n")
-            print("\\\\\\\\\\\\\\")
-            print(each.fullName)
-            print(each.gender)
-            print(each.age)
-            print(each.stage)
-            print(each.job)
-            print("\\\\\\\\\\\\\\")
-
-class HumanGroupColleagues(HumanGroup):
-    
-    def __init__(self,count = None,job = None,**kwargs):
-        
-        # if the amount of humans isn't provided, create a random amount
-        
-        if count == None:
-            self._count = random.randint(2,8)
-        
-        else:
-            self._count = count
-        
-        # create a certain number humans according to the _count and add them
-        # to the humanList.  If there are arguments, use them, if not make a default
-        # random human
-            
-        self.humanList = []
-        
-        randomJob = getJobDict()["singular"]
-        
-        # if a job isn't specified, pick a random one
-        
-        for i in range(self._count):
-           if job == None:
-               newHuman = Human(job = randomJob,**kwargs)
-               self.humanList.append(newHuman)
-           else:
-               newHuman = Human(job = job,**kwargs)
-               self.humanList.append(newHuman)
-               
-    @property
-    def sharedTrait(self):
-        return self.jobs[0]           
-
-              
-class HumanGroupContemporaries(HumanGroup):
-    
-    def __init__(self,count = None,age = None,**kwargs):
-        
-        # if the amount of humans isn't provided, create a random amount
-        
-        if count == None:
-            self._count = random.randint(2,8)
-        
-        else:
-            self._count = count
-        
-        # create a certain number humans according to the _count and add them
-        # to the humanList.  If there are arguments, use them, if not make a default
-        # random human
-            
-        self.humanList = []
-        
-        sharedAge = randomAge()
-        
-        # if an age isn't specified, pick a random one
-        
-        for i in range(self._count):
-           if age == None:
-               newHuman = Human(age = sharedAge,**kwargs)
-               self.humanList.append(newHuman)
-           else:
-               newHuman = Human(age = age,**kwargs)
-               self.humanList.append(newHuman)
-    
-    @property
-    def sharedTrait(self):
-        return self.stages[0]
-
-class HumanGroupFamily(HumanGroup):
-    
-    def __init__(self,count = None,lastName = None,**kwargs):
-        
-        # if the amount of humans isn't provided, create a random amount
-        
-        if count == None:
-            self._count = random.randint(2,8)
-        
-        else:
-            self._count = count
-        
-        # create a certain number humans according to the _count and add them
-        # to the humanList.  If there are arguments, use them, if not make a default
-        # random human
-            
-        self.humanList = []
-        
-        sharedLastName = randomName(form = "last")
-        
-        # if a last name isn't specified, pick a random one
-        
-        for i in range(self._count):
-           if lastName == None:
-               newHuman = Human(lastName = sharedLastName,**kwargs)
-               self.humanList.append(newHuman)
-           else:
-               newHuman = Human(lastName = sharedLastname,**kwargs)
-               self.humanList.append(newHuman)
-    
-    @property
-    def sharedTrait(self):
-        return self.stages[0]
-
-    
-    
 class Human(object):
     
     """This is the human class"""
     
     def __init__(self,gender = None,fullName = None,firstName = None, lastName = None,
-                 age = None,job = None):
+                 age = None,stage = None,job = None):
         
         # if a gender hasn't been provided, pick
         # a random gender
@@ -541,7 +369,10 @@ class Human(object):
         # determine the stage in the human's life
         # based on age
         
-        self._stage = ageToStage(self._age)
+        if stage == None:
+            self._stage = ageToStage(self._age)
+        else:
+            self._stage = stage
         
         # if a job hasn't been provided, pick
         # a random job.  A specific job can be provided
@@ -587,10 +418,10 @@ class Human(object):
     
     
     def __repr__(self):
-        return ("<Human instance: %s %s>") % (self.fullName)
+        return ("<Human instance: %s %s>") % (self.firstName,self.lastName)
     
     def __str__(self):
-        return ("%s %s") % (self.fullName)
+        return ("%s %s") % (self.firstName,self.lastName)
     
            
     def hello(self):
@@ -606,8 +437,175 @@ class Human(object):
                                    jobArticle = self.job["article"],
                                    job = self.job["singular"])
                                                     
-        print(helloFormat)
+        print(helloFormat) 
+
+class HumanGroup(object):
+    
+    """This is the human group class"""
+    
+    def __init__(self,count = None,**kwargs):
         
+        # if the amount of humans isn't provided, create a random amount
+        
+        if count == None:
+            self._count = random.randint(2,8)
+        
+        else:
+            self._count = count
+        
+        # create a certain number humans according to the _count and add them
+        # to the humanList.  If there are arguments, use them, if not make a default
+        # random human
+            
+        self._humanList = []
+        
+        for i in range(self._count):
+            if kwargs == {}:
+                newHuman = Human()
+                self._humanList.append(newHuman)
+                #print(_humanList)
+            else:
+                newHuman = Human(**kwargs)
+                self._humanList.append(newHuman)
+                #print(_humanList)    
+    
+    @property
+    def count(self):
+        return self._count
+    
+    @property
+    def list(self):
+        return self._humanList
+               
+    @property
+    def jobs(self):
+                
+        return humanTraitCount(self._humanList,"nJobs","job")
+
+    @property
+    def stages(self):
+     
+        return humanTraitCount(self._humanList,"nStages","stage")
+                    
+    @property
+    def info(self):
+        
+        for each in self._humanList:
+            print("\n")
+            print("\\\\\\\\\\\\\\")
+            print(each.fullName)
+            print(each.gender)
+            print(each.age)
+            print(each.stage)
+            print(each.job)
+            print("\\\\\\\\\\\\\\")
+
+class HumanGroupColleagues(HumanGroup):
+    
+    def __init__(self,count = None,job = None,**kwargs):
+        
+        # if the amount of humans isn't provided, create a random amount
+        
+        if count == None:
+            self._count = random.randint(2,8)
+        
+        else:
+            self._count = count
+        
+        # create a certain number humans according to the _count and add them
+        # to the _humanList.  If there are arguments, use them, if not make a default
+        # random human
+            
+        self._humanList = []
+        
+        randomJob = getJobDict()["singular"]
+        
+        # if a job isn't specified, pick a random one
+        
+        for i in range(self._count):
+           if job == None:
+               newHuman = Human(job = randomJob,**kwargs)
+               self._humanList.append(newHuman)
+           else:
+               newHuman = Human(job = job,**kwargs)
+               self._humanList.append(newHuman)
+               
+    @property
+    def sharedTrait(self):
+        return self.jobs[0]           
+           
+class HumanGroupContemporaries(HumanGroup):
+    
+    def __init__(self,count = None,age = None,**kwargs):
+        
+        # if the amount of humans isn't provided, create a random amount
+        
+        if count == None:
+            self._count = random.randint(2,8)
+        
+        else:
+            self._count = count
+        
+        # create a certain number humans according to the _count and add them
+        # to the _humanList.  If there are arguments, use them, if not make a default
+        # random human
+            
+        self._humanList = []
+        
+        sharedAge = randomAge()
+        
+        sharedStage = ageToStage(sharedAge)
+        
+        # if an age isn't specified, pick a random one
+        
+        for i in range(self._count):
+           if age == None:
+               newHuman = Human(age = sharedAge,stage = sharedStage,**kwargs)
+               self._humanList.append(newHuman)
+           else:
+               newHuman = Human(age = age,stage = sharedStage,**kwargs)
+               self._humanList.append(newHuman)
+    
+    @property
+    def sharedTrait(self):
+        return self.stages[0]
+
+class HumanGroupFamily(HumanGroup):
+    
+    def __init__(self,count = None,lastName = None,**kwargs):
+        
+        # if the amount of humans isn't provided, create a random amount
+        
+        if count == None:
+            self._count = random.randint(2,8)
+        
+        else:
+            self._count = count
+        
+        # create a certain number humans according to the _count and add them
+        # to the _humanList.  If there are arguments, use them, if not make a default
+        # random human
+            
+        self._humanList = []
+        
+        sharedLastName = randomName(form = "last")
+        
+        # if a last name isn't specified, pick a random one
+        
+        for i in range(self._count):
+           if lastName == None:
+               newHuman = Human(lastName = sharedLastName,**kwargs)
+               self._humanList.append(newHuman)
+           else:
+               newHuman = Human(lastName = sharedLastname,**kwargs)
+               self._humanList.append(newHuman)
+    
+    @property
+    def sharedTrait(self):
+        
+        familyName = "The %s family" % (self._humanList[0].lastName)
+        
+        return familyName
 
 class Word(object):
     
@@ -730,7 +728,6 @@ class Noun(Word):
         if self.form == "plural":
             return random.choice(availableQuantifiers)
             
-
 class NounAnimate(Noun):
     
     """This is the noun class"""
@@ -751,22 +748,6 @@ class NounAnimate(Noun):
             self.quantity = quantity["number"]
             self.form = quantity["form"]
                         
-
-class Subject(object):
-    
-    """This is the subject class"""
-    
-    def __init__(self,subjects,quantity):
-        pass
-        # subjects is a list of all of the 
-        
-    
-    
-
-
-
-
-
 class Adjective(Word):
 
     """This is the adjective class"""
@@ -789,7 +770,6 @@ class Adjective(Word):
     @property
     def article(self):
         return self.name["article"]
-
 
 class Pronoun(Word):
 
@@ -865,9 +845,6 @@ class Pronoun(Word):
     def demonstrativeFar(self):
         return self.definition["demonstrative far"]
     
-
-
-
 class NewHeadline(object):
     
     def __init__(self):
@@ -878,7 +855,8 @@ class NewHeadline(object):
             
             hSubject = random.choice([Human(),
                                       HumanGroupColleagues(),
-                                      HumanGroupContemporaries()])
+                                      HumanGroupContemporaries(),
+                                      HumanGroupFamily()])
             
             hSubjectRep = ""
             hAction = Verb(randomDict([CSV_RELATIVE_PATH+"/rhg_verbs.csv"]))
