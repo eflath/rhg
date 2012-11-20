@@ -8,19 +8,11 @@ import pprint
 import string
 import locale
 
-
+ 
 import cgitb
 cgitb.enable()
 
 CSV_RELATIVE_PATH = "../resources/csv"
-
-test = []
-
-##Pretty print
-##syntax: pp.pprint(stuff)
-
-pp = pprint.PrettyPrinter(indent=4)
-
  
 def randomDict(csvfile,filter = 0):
     
@@ -218,6 +210,31 @@ def getJobDict(job = None):
             if each["singular"] == job:
                 return each
 
+def getStageDict(stage = None):
+    
+    """ returns a stage's dictionary.  If a specific stage, in singular form,
+    isn't supplied, a random one is returned.
+    """
+    
+    # store all job dictionaries
+    
+    allStages = csvToDict([CSV_RELATIVE_PATH + "/rhg_nStages.csv"])
+    
+    # if a job isn't specified, return a random one
+    
+    if stage == None:
+        return random.choice(allStages)
+
+    # see if the supplied job exists in the maaster job list, and return
+    # its dict
+
+    else:
+        for each in allStages:
+            if each["singular"] == stage:
+                return each
+
+
+
 def getTrait(csv,trait = None):
     
     traitPath = "[CSV_RELATIVE_PATH + \"/rhg_" + csv + ".csv\"]"
@@ -245,6 +262,17 @@ def ageToStage(age):
             matchedStages.append(stage)
     
     return random.choice(matchedStages)
+
+def stageToAge(stage):
+    
+    allStages = csvToDict([CSV_RELATIVE_PATH + "/rhg_nStages.csv"])
+    
+    matchedStages = []
+    
+    for myDict in allStages:
+        if myDict["singular"] == stage:
+            return random.randint(int(myDict["range_low"]),int(myDict["range_high"]))
+
  
 
 def humanTraitCount(humanList,csv,trait):
@@ -369,11 +397,13 @@ class Human(object):
         # determine the stage in the human's life
         # based on age
         
-        if stage == None:
+        if age == None and stage:
+            self._stage = getStageDict(stage)
+            self._age = stageToAge(stage)
+            
+        if age and stage == None:
             self._stage = ageToStage(self._age)
-        else:
-            self._stage = stage
-        
+         
         # if a job hasn't been provided, pick
         # a random job.  A specific job can be provided
         # by using the getJobDict() function and passing
