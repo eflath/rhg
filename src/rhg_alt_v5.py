@@ -338,7 +338,7 @@ def randomHumanGroupColleagues():
     
     sharedJob = getJobDict()["singular"]
     
-    return HumanGroup(job = sharedJob)
+    return HumanGroup(job = sharedJob,groupType = "colleagues")
 
 def randomHumanGroupContemporaries():
     
@@ -346,8 +346,14 @@ def randomHumanGroupContemporaries():
     
     sharedStage = ageToStage(sharedAge)
     
-    return HumanGroup(age = sharedAge, stage = sharedStage)
- 
+    return HumanGroup(age = sharedAge, stage = sharedStage,groupType = "contemporaries")
+
+def randomHumanGroupFamily():
+    
+    sharedLastName = randomName(form = "last")
+    
+    return HumanGroup(lastName = sharedLastName,groupType = "family")
+    
 class Human(object):
     
     """This is the human class"""
@@ -498,7 +504,7 @@ class HumanGroup(object):
     
     """This is the human group class"""
     
-    def __init__(self,count = None,**kwargs):
+    def __init__(self,count = None,groupType = None,**kwargs):
         
         # if the amount of humans isn't provided, create a random amount
         
@@ -524,6 +530,18 @@ class HumanGroup(object):
                 self._humanList.append(newHuman)
                 #print(_humanList)    
     
+        ####
+    
+        if groupType == None:
+            self._commonTrait = None
+        if groupType == "colleagues":
+            self._commonTrait = humanTraitCount(self._humanList,"nJobs","job")
+        if groupType == "contemporaries":
+             self._commonTrait = humanTraitCount(self._humanList,"nStages","stage")
+        if groupType == "family":
+            familyName = "The %s family" % (self._humanList[0].lastName)
+            self._commonTrait = familyName 
+    
     @property
     def count(self):
         return self._count
@@ -541,6 +559,12 @@ class HumanGroup(object):
     def stages(self):
      
         return humanTraitCount(self._humanList,"nStages","stage")
+    
+    @property
+    def commonTrait(self):
+        
+        return  self._commonTrait        
+                    
                     
     @property
     def info(self):
