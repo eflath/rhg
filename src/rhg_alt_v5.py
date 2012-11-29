@@ -251,7 +251,16 @@ def getTrait(csv,trait = None):
 
 
 
-def ageToStage(age):
+def ageToStage(age,gender):
+    
+    print("\n000000000000000000000")
+    print(age)
+    print(gender)
+    print("000000000000000000000")
+    
+    validGenders = ["n"]
+    validGenders.append(gender)
+    print("validGenders: %s") % (validGenders)
     
     allStages = csvToDict([CSV_RELATIVE_PATH + "/rhg_nStages.csv"])
     
@@ -261,9 +270,27 @@ def ageToStage(age):
         if age >= int(stage["range_low"]) and age <= int(stage["range_high"]):
             matchedStages.append(stage)
     
+    for each in matchedStages:
+        if each["gender"] != gender and each["gender"] != "n":
+            print(gender + " does not match " + str(each["gender"]))
+            matchedStages.remove(each)
+            print("removing %s" % (each))
+        else:
+            print(gender + " matches " + str(each["gender"]))
+            print("keeping %s" % (each))
+                
+    
+    print("\nVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV")
+    print("\nAge: %s") % (age)
+    print("\nAge: %s") % (gender)
+    print("\n")
+    for each in matchedStages:
+        print("%s") % (each)
+    print("VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV")
+    
     return random.choice(matchedStages)
 
-def stageToAge(stage):
+def stageToAge(stage,gender):
     
     allStages = csvToDict([CSV_RELATIVE_PATH + "/rhg_nStages.csv"])
     
@@ -271,7 +298,8 @@ def stageToAge(stage):
     
     for myDict in allStages:
         if myDict["singular"] == stage:
-            return random.randint(int(myDict["range_low"]),int(myDict["range_high"]))
+            if myDict["gender"] == gender:
+                return random.randint(int(myDict["range_low"]),int(myDict["range_high"]))
 
  
 
@@ -344,7 +372,7 @@ def randomHumanGroupContemporaries():
     
     sharedAge = randomAge()
     
-    sharedStage = ageToStage(sharedAge)
+    sharedStage = ageToStage(sharedAge,"n")
     
     return HumanGroup(age = sharedAge, stage = sharedStage,groupType = "contemporaries")
 
@@ -428,10 +456,14 @@ class Human(object):
         
         if age == None and stage:
             self._stage = getStageDict(stage)
-            self._age = stageToAge(stage)
+            self._age = stageToAge(stage,self._gender)
+        
+        elif age and stage:
+            self._age = age
+            self._stage = stage
             
         else:
-            self._stage = ageToStage(self._age)
+            self._stage = ageToStage(self._age,self._gender)
          
          
          
@@ -490,13 +522,13 @@ class Human(object):
         hello = ("Hello, my name is {firstName} {lastName} and I am {stageArticle} {stage}!" +
                  " I'm {age} years old and working as {jobArticle} {job}!")
             
-        helloFormat = hello.format(firstName = self.firstName,
-                                   lastName = self.lastName,
-                                   stageArticle = self.stage["article"],
-                                   stage = self.stage["singular"],
-                                   age = self.age,
-                                   jobArticle = self.job["article"],
-                                   job = self.job["singular"])
+        helloFormat = hello.format(firstName = self._firstName,
+                                   lastName = self._lastName,
+                                   stageArticle = self._stage["article"],
+                                   stage = self._stage["singular"],
+                                   age = self._age,
+                                   jobArticle = self._job["article"],
+                                   job = self._job["singular"])
                                                     
         print(helloFormat) 
 
@@ -530,16 +562,16 @@ class HumanGroup(object):
                 self._humanList.append(newHuman)
                 #print(_humanList)    
     
-        ####
+        # set appropriate common trait based on group type
     
         if groupType == None:
             self._commonTrait = None
         if groupType == "colleagues":
-            self._commonTrait = humanTraitCount(self._humanList,"nJobs","job")
+            self._commonTrait = humanTraitCount(self._humanList,"nJobs","job")[0]
         if groupType == "contemporaries":
-             self._commonTrait = humanTraitCount(self._humanList,"nStages","stage")
+             self._commonTrait = humanTraitCount(self._humanList,"nStages","stage")[0]
         if groupType == "family":
-            familyName = "The %s family" % (self._humanList[0].lastName)
+            familyName = "the %s family" % (self._humanList[0].lastName)
             self._commonTrait = familyName 
     
     @property
@@ -563,7 +595,7 @@ class HumanGroup(object):
     @property
     def commonTrait(self):
         
-        return  self._commonTrait        
+        return  self._commonTrait       
                     
                     
     @property
@@ -578,113 +610,6 @@ class HumanGroup(object):
             print(each.stage)
             print(each.job)
             print("\\\\\\\\\\\\\\")
-
-class HumanGroupColleagues(HumanGroup):
-    
-    def __init__(self,count = None,job = None,**kwargs):
-        
-        # if the amount of humans isn't provided, create a random amount
-        
-        if count == None:
-            self._count = random.randint(2,8)
-        
-        else:
-            self._count = count
-        
-        # create a certain number humans according to the _count and add them
-        # to the _humanList.  If there are arguments, use them, if not make a default
-        # random human
-            
-        self._humanList = []
-        
-        randomJob = getJobDict()["singular"]
-        
-        # if a job isn't specified, pick a random one
-        
-        for i in range(self._count):
-           if job == None:
-               newHuman = Human(job = randomJob,**kwargs)
-               self._humanList.append(newHuman)
-           else:
-               newHuman = Human(job = job,**kwargs)
-               self._humanList.append(newHuman)
-               
-    @property
-    def sharedTrait(self):
-        return self.jobs[0]           
-           
-class HumanGroupContemporaries(HumanGroup):
-    
-    def __init__(self,count = None,age = None,**kwargs):
-        
-        # if the amount of humans isn't provided, create a random amount
-        
-        if count == None:
-            self._count = random.randint(2,8)
-        
-        else:
-            self._count = count
-        
-        # create a certain number humans according to the _count and add them
-        # to the _humanList.  If there are arguments, use them, if not make a default
-        # random human
-            
-        self._humanList = []
-        
-        sharedAge = randomAge()
-        
-        sharedStage = ageToStage(sharedAge)
-        
-        # if an age isn't specified, pick a random one
-        
-        for i in range(self._count):
-           if age == None:
-               newHuman = Human(age = sharedAge,stage = sharedStage,**kwargs)
-               self._humanList.append(newHuman)
-           else:
-               newHuman = Human(age = age,stage = sharedStage,**kwargs)
-               self._humanList.append(newHuman)
-    
-    @property
-    def sharedTrait(self):
-        return self.stages[0]
-
-class HumanGroupFamily(HumanGroup):
-    
-    def __init__(self,count = None,lastName = None,**kwargs):
-        
-        # if the amount of humans isn't provided, create a random amount
-        
-        if count == None:
-            self._count = random.randint(2,8)
-        
-        else:
-            self._count = count
-        
-        # create a certain number humans according to the _count and add them
-        # to the _humanList.  If there are arguments, use them, if not make a default
-        # random human
-            
-        self._humanList = []
-        
-        sharedLastName = randomName(form = "last")
-        
-        # if a last name isn't specified, pick a random one
-        
-        for i in range(self._count):
-           if lastName == None:
-               newHuman = Human(lastName = sharedLastName,**kwargs)
-               self._humanList.append(newHuman)
-           else:
-               newHuman = Human(lastName = sharedLastname,**kwargs)
-               self._humanList.append(newHuman)
-    
-    @property
-    def sharedTrait(self):
-        
-        familyName = "The %s family" % (self._humanList[0].lastName)
-        
-        return familyName
 
 class Word(object):
     
@@ -932,10 +857,10 @@ class NewHeadline(object):
         # Create the words necessary for the headline
             
     
-            hSubject = random.choice([Human(),
-                                      HumanGroupColleagues(),
-                                      HumanGroupContemporaries(),
-                                      HumanGroupFamily()])
+            hSubject = random.choice([randomHuman(),
+                                      randomHumanGroupColleagues(),
+                                      randomHumanGroupContemporaries(),
+                                      randomHumanGroupFamily()])
             
             hAction = Verb(randomDict([CSV_RELATIVE_PATH+"/rhg_verbs.csv"]))
             
@@ -954,7 +879,7 @@ class NewHeadline(object):
                 hActionTense = hAction.present
                 
             if isinstance(hSubject, HumanGroup):    
-                hSubjectRep = hSubject.sharedTrait
+                hSubjectRep = hSubject.commonTrait
                 hActionTense = hAction.infinitive
             
             # Assemble the headline using the words

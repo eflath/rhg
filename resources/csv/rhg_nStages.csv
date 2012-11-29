@@ -1,9 +1,17 @@
-singular,plural,article,range_low,range_high
-infant,infants,an,0,0
-toddler,toddlers,a,1,3
-kid,kids,a,4,12
-child,children,a,1,12
-teenager,teenagers,a,13,19
-young adult,young adults,a,20,29
-adult,adults,an,30,59
-senior citizen,senior citizens,a,60,105
+singular,plural,article,range_low,range_high,gender
+infant,infants,an,0,0,n
+toddler,toddlers,a,1,3,n
+kid,kids,a,4,12,n
+child,children,a,1,12,n
+teenager,teenagers,a,13,19,n
+young adult,young adults,a,20,29,n
+adult,adults,an,30,59,n
+senior citizen,senior citizens,a,60,105,n
+elderly man,elderly men,an,68,105,m
+man,men,a,21,105,m
+boy,boys,a,0,20,m
+grandfather,grandfathers,a,60,105,m
+elderly woman,elderly women,an,68,105,f
+woman,women,a,21,105,f
+girl,girls,a,0,20,f
+grandmother,grandmothers,a,60,105,f
